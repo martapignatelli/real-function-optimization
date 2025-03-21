@@ -1,0 +1,109 @@
+#PARAMETERS COMMON TO ALL METHODS
+
+# Function you want to minimize
+f = '4*x[0]*x[0]*x[0]*x[0] + 2*x[1]*x[1] + 2*x[0]*x[1] + 2*x[0]'
+# f = 'x[0]*x[0]+x[1]*x[1]'
+
+
+# Exact gradient of f (optional)
+grad_f = '{16*x[0]*x[0]*x[0] + 2*x[1] + 2, 4*x[1] + 2*x[0]}'
+# grad_f = '{2*x[0], 2*x[1]}'
+
+# set 
+# fd = 0 if you want to use the exact gradient written above 
+# fd = 1 if you want to approximate the gradient using finite differences
+# (It works only in dimension 2)
+fd = 0
+
+# Finite differences type (options: 'Centered', 'Forward', 'Backward')
+fd_t = 'Centered'
+
+# Discretization step
+h = 1e-2
+
+# Initial condition (you must keep '' in order to delimit the vector and the separator is " ")
+initial_condition = '0. 0.'
+
+# Tolerance for the residual criterion
+tolerance_r = 1e-6
+
+# Tolerance for the step length
+tolerance_s = 1e-6
+
+# Initial step
+initial_step = 1
+
+# Maximum number of itereations
+max_iterations = 1000
+
+# mu paramter for the exponential decay and the inverse decay
+mu = 0.2
+
+# Minimum step size
+minimum_step = 1e-6
+
+
+## GRADIENT DESCENT SPECIFIC PARAMETERS
+
+# Set true if you want to use gradient descent
+gradient_descent = true
+
+# Select method for the gradient descent (options: 'Armijo rule', 'Inverse decay', 'Exponential decay')
+gradient_method_t = 'Armijo rule'
+
+# Parameter for the Armijo rule
+sigma = 0.1
+
+
+
+# HEAVY BALL SPECIFIC PARAMETERS
+
+# Set true if you want to use heavy ball
+heavy_ball = true
+
+# eta (memory) parameter for heavy ball method
+eta = 0.7
+
+# If you want to change the following two values you must tune hyperparamters carefully 
+# (in particular eta and minimum_step)
+
+# Select type for the heavy ball method (options: 'Constant', 'Inverse decay', 'Exponential decay')
+heavy_ball_t = 'Exponential decay'
+
+# Select strategy (choice of eta) for the heavy ball method (options: 'Constant', 'Dynamic')
+heavy_ball_s = 'Constant'
+
+
+
+# NESTEROV SPECIFIC PARAMETERS
+
+# Set true if you want to use Nesterov method
+nesterov = true
+
+# eta (memory) parameter for nesterov method
+eta_nest = 0.7
+
+# If you want to change the following two values you must tune hyperparamters carefully 
+# (in particular eta_nes and minimum_step)
+
+# Select type for the nesterov method (options: 'Constant', 'Inverse decay', 'Exponential decay')
+nesterov_t = 'Exponential decay'
+
+# Select strategy (choice of eta) for the heavy ball method (options: 'Constant', 'Dynamic')
+nesterov_s = 'Constant'
+
+
+
+#ADAM SPECIFIC PARAMETERS
+
+# Set true if you want to use Adam method
+adam = true
+
+#Exponential decay rate for 1st moment estimate
+beta1 = 0.9;
+
+#Exponential decay rate for 2nd moment estimate
+beta2 = 0.999;
+
+# Select type for the adam method (options: 'Constant', 'Dynamic')
+adam_t = 'Dynamic'
