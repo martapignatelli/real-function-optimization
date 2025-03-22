@@ -4,7 +4,7 @@
 After cloning the repository with:
 
 ```bash
-git clone --recurse-submodules git@github.com:PACS-24-25/challenge1-male.git
+git clone --recurse-submodules git@github.com:alessandropedone/real-function-optimization.git
 ```
 
 Once you are in the right directoryu, you can compile the `muparserx` library by running the provided little script with the command:
