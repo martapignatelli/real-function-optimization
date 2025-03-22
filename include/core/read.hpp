@@ -4,7 +4,7 @@
 #include "gradient_descent.hpp"
 #include "GetPot"
 #include "muparserx_interface.hpp"
-#include "bivar_gradient.hpp"
+#include "fd_gradient.hpp"
 #include "heavy_ball.hpp"
 #include "nesterov.hpp"
 #include "adam.hpp"

@@ -33,7 +33,7 @@ GradientDescentParams read_gradient_descent(const GetPot &datafile)
 
     // if user prefers to use the approximate gradient
     GradientDescentParams params;
-    if (fd & (N == 2))
+    if (fd)
     {
         const std::string fd_t = datafile("fd_t", "Centered");
         const double h = datafile("h", 1e-2);
@@ -41,15 +41,15 @@ GradientDescentParams read_gradient_descent(const GetPot &datafile)
         std::function<std::vector<double>(const std::vector<double> &)> df_grad_f;
         if (fd_t == "Forward")
         {
-            df_grad_f = bivar_gradient::derive_2D<1, decltype(f), double, bivar_gradient::DifferenceType::FORWARD>(f, h);
+            df_grad_f = gradient<decltype(f), double, DifferenceType::Forward>(f, h);
         }
         else if (fd_t == "Backward")
         {
-            df_grad_f = bivar_gradient::derive_2D<1, decltype(f), double, bivar_gradient::DifferenceType::BACKWARD>(f, h);
+            df_grad_f = gradient<decltype(f), double, DifferenceType::Backward>(f, h);
         }
         else
         {
-            df_grad_f = bivar_gradient::derive_2D<1, decltype(f), double, bivar_gradient::DifferenceType::CENTERED>(f, h);
+            df_grad_f = gradient<decltype(f), double, DifferenceType::Centered>(f, h);
         }
         params = {
             f,
@@ -119,7 +119,7 @@ HeavyBallParams read_heavy_ball(const GetPot &datafile)
 
     // if user prefers to use the approximate gradient
     HeavyBallParams params;
-    if (fd & (N == 2))
+    if (fd)
     {
         const std::string fd_t = datafile("fd_t", "Centered");
         const double h = datafile("h", 1e-2);
@@ -127,15 +127,15 @@ HeavyBallParams read_heavy_ball(const GetPot &datafile)
         std::function<std::vector<double>(const std::vector<double> &)> df_grad_f;
         if (fd_t == "Forward")
         {
-            df_grad_f = bivar_gradient::derive_2D<1, decltype(f), double, bivar_gradient::DifferenceType::FORWARD>(f, h);
+            df_grad_f = gradient<decltype(f), double, DifferenceType::Forward>(f, h);
         }
         else if (fd_t == "Backward")
         {
-            df_grad_f = bivar_gradient::derive_2D<1, decltype(f), double, bivar_gradient::DifferenceType::BACKWARD>(f, h);
+            df_grad_f = gradient<decltype(f), double, DifferenceType::Backward>(f, h);
         }
         else
         {
-            df_grad_f = bivar_gradient::derive_2D<1, decltype(f), double, bivar_gradient::DifferenceType::CENTERED>(f, h);
+            df_grad_f = gradient<decltype(f), double, DifferenceType::Centered>(f, h);
         }
         params = {
             f,
@@ -202,10 +202,10 @@ NesterovParams read_nesterov(const GetPot &datafile)
     // Nesterov specific paramters
     const double minimum_step = datafile("minimum_step", 1e-2); // Minimum step size
     const double eta = datafile("eta_nest", 0.9);               // Memory parameter
-    
+
     // if user prefers to use the approximate gradient
     NesterovParams params;
-    if (fd & (N == 2))
+    if (fd)
     {
         const std::string fd_t = datafile("fd_t", "Centered");
         const double h = datafile("h", 1e-2);
@@ -213,15 +213,15 @@ NesterovParams read_nesterov(const GetPot &datafile)
         std::function<std::vector<double>(const std::vector<double> &)> df_grad_f;
         if (fd_t == "Forward")
         {
-            df_grad_f = bivar_gradient::derive_2D<1, decltype(f), double, bivar_gradient::DifferenceType::FORWARD>(f, h);
+            df_grad_f = gradient<decltype(f), double, DifferenceType::Forward>(f, h);
         }
         else if (fd_t == "Backward")
         {
-            df_grad_f = bivar_gradient::derive_2D<1, decltype(f), double, bivar_gradient::DifferenceType::BACKWARD>(f, h);
+            df_grad_f = gradient<decltype(f), double, DifferenceType::Backward>(f, h);
         }
         else
         {
-            df_grad_f = bivar_gradient::derive_2D<1, decltype(f), double, bivar_gradient::DifferenceType::CENTERED>(f, h);
+            df_grad_f = gradient<decltype(f), double, DifferenceType::Centered>(f, h);
         }
         params = {
             f,
@@ -263,7 +263,7 @@ AdamParams read_adam(const GetPot &datafile)
     const std::string f_str = datafile("f", "4*x[0]*x[0]*x[0]*x[0] + 2*x[1]*x[1] + 2*x[0]*x[1] + 2*x[0]"); // Function f
     std::cout << "Function to be optimized: " << f_str << std::endl;
     muParserXScalarInterface f(f_str, N);                        // Initialize the function with muparserx
-    const bool fd = datafile("fd", true);                       // Use finite differences to compute the gradient
+    const bool fd = datafile("fd", true);                        // Use finite differences to compute the gradient
     const double tolerance_r = datafile("tolerance_r", 1e-6);    // Tolerance for convergence (residual)
     const double tolerance_s = datafile("tolerance_s", 1e-6);    // Tolerance for convergence (step length)
     const double initial_step = datafile("initial_step", 1.0);   // Initial step size αlpha0
@@ -293,7 +293,7 @@ AdamParams read_adam(const GetPot &datafile)
 
     // if user prefers to use the approximate gradient
     AdamParams params;
-    if (fd & (N == 2))
+    if (fd)
     {
         const std::string fd_t = datafile("fd_t", "Centered");
         const double h = datafile("h", 1e-2);
@@ -301,15 +301,15 @@ AdamParams read_adam(const GetPot &datafile)
         std::function<std::vector<double>(const std::vector<double> &)> df_grad_f;
         if (fd_t == "Forward")
         {
-            df_grad_f = bivar_gradient::derive_2D<1, decltype(f), double, bivar_gradient::DifferenceType::FORWARD>(f, h);
+            df_grad_f = gradient<decltype(f), double, DifferenceType::Forward>(f, h);
         }
         else if (fd_t == "Backward")
         {
-            df_grad_f = bivar_gradient::derive_2D<1, decltype(f), double, bivar_gradient::DifferenceType::BACKWARD>(f, h);
+            df_grad_f = gradient<decltype(f), double, DifferenceType::Backward>(f, h);
         }
         else
         {
-            df_grad_f = bivar_gradient::derive_2D<1, decltype(f), double, bivar_gradient::DifferenceType::CENTERED>(f, h);
+            df_grad_f = gradient<decltype(f), double, DifferenceType::Centered>(f, h);
         }
         params = {
             f,

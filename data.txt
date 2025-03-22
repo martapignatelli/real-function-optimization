@@ -2,18 +2,17 @@
 
 # Function you want to minimize
 f = '4*x[0]*x[0]*x[0]*x[0] + 2*x[1]*x[1] + 2*x[0]*x[1] + 2*x[0]'
-# f = 'x[0]*x[0]+x[1]*x[1]'
+# f = 'x[0]*x[0]+x[1]*x[1]+x[2]*x[2]'
 
 
 # Exact gradient of f (optional)
 grad_f = '{16*x[0]*x[0]*x[0] + 2*x[1] + 2, 4*x[1] + 2*x[0]}'
-# grad_f = '{2*x[0], 2*x[1]}'
+# grad_f = '{2*x[0], 2*x[1], 2*x[2]}'
 
 # set 
 # fd = 0 if you want to use the exact gradient written above 
 # fd = 1 if you want to approximate the gradient using finite differences
-# (It works only in dimension 2)
-fd = 0
+fd = 1
 
 # Finite differences type (options: 'Centered', 'Forward', 'Backward')
 fd_t = 'Centered'
@@ -23,6 +22,7 @@ h = 1e-2
 
 # Initial condition (you must keep '' in order to delimit the vector and the separator is " ")
 initial_condition = '0. 0.'
+# initial_condition = '1. 1. 1.'
 
 # Tolerance for the residual criterion
 tolerance_r = 1e-6

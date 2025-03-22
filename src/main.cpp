@@ -4,7 +4,7 @@
 
 #include "gradient_descent.hpp"
 #include "muparserx_interface.hpp"
-#include "bivar_gradient.hpp"
+#include "fd_gradient.hpp"
 #include "read.hpp"
 #include "run.hpp"
 #include "heavy_ball.hpp"
