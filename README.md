@@ -49,8 +49,6 @@ Two options are available:
    - Backward Differences
    - Centered Differences
 
-*Note:* Finite differences are implemented and supported only for 2-dimensional cases.
-
 ## Design Decisions
 - **Solver Design**: the solver is implemented as a **functor** and its state corresponds to the method's parameters, allowing for modular and reusable design.
 - **Template Usage**: template programming is used to manage method choices and gradient computation strategies efficiently, as the set of choices is finite and limited in size.
