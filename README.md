@@ -17,11 +17,21 @@ If you encounter an error such as `cmake: command not found`, you can run `sudo 
 
 
 ## Implemented Methods
-We implemented the following optimization algorithms:
-1. **Gradient Descent (GD)**
-2. **Heavy Ball Method (HB)**
-3. **Nesterov Accelerated Gradient (NAG)**
-4. **ADAM Method**
+We implemented the following optimization algorithms.
+Basic method:
+1. Gradient Descent (GD)
+Momentum-based methods:
+2. Heavy Ball (or Momentum) Method (HB)
+3. Nesterov Accelerated Gradient (NAG)
+Adaptive methods:
+4. ADAM Method (it combines momentum the benefits of momentum and the adaptiveness of _RMSProp method_)
+Second order methods:
+5. Newton's Method
+6. Quasi-Newton Methods
+Derivative-Free Optimization (DFO) methods:
+7. Powell's Method
+8. Nelder-Mead (Downhill Simplex)
+
 
 ## Enhancements and Optimizations
 The following optimizations, that we decided to implement, improve the convergence speed and stability of all methods.
