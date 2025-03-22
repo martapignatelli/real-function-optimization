@@ -7,7 +7,7 @@ After cloning the repository with:
 git clone --recurse-submodules git@github.com:PACS-24-25/challenge1-male.git
 ```
 
-You can compile the muparserx library by running the provided little script with the command:
+Once you are in the right directoryu, you can compile the `muparserx` library by running the provided little script with the command:
 
 ```bash
 ./setup.sh
@@ -65,6 +65,9 @@ This structured file facilitates testing of different optimization scenarios (wi
 ## `muparser_interface.hpp`
 It's an interface developed to parse functions (also vector functions) of an arbitrary number of variables. It's adapted from `muParserInterface` inside [`pacs-examples`](https://github.com/pacs-course/pacs-examples.git) repository.
 
+## Authors
+- Marta Pignatelli ([@martapignatelli](https://github.com/martapignatelli))
+- Alessandro Pedone ([@alessandropedone](https://github.com/alessandropedone))
 
 
 
