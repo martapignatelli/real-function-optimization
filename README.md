@@ -15,6 +15,12 @@ Once you are in the right directoryu, you can compile the `muparserx` library by
 
 If you encounter an error such as `cmake: command not found`, you can run `sudo apt install cmake` if you are on Debian, Ubuntu, Linux Mint and related distributions (similar commands can be found online for other distributions).
 
+You must have TTB Library installed on your machine, since the execution of elementwise operations is run in parallel using [TBB Library](https://github.com/uxlfoundation/oneTBB). For instance, if you're on Debian (...) you could run the following command in the terminal.
+```bash
+sudo apt update
+sudo apt install libtbb-dev
+```
+You can find more information on [Wikipedia](https://en.wikipedia.org/wiki/Threading_Building_Blocks).
 
 ## Implemented Methods
 We implemented the following optimization algorithms.
