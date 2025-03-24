@@ -84,8 +84,6 @@ Two options are available:
 The explanation of all input parameters is provided directly inside data.txt as comments.
 This structured file facilitates testing of different optimization scenarios (without recompiling anything).
 
-**NOTE**: the default value of `max_iterations` is set to $1000$ to observe the **convergence of ADAM Method** too, but it's important to note that GD converges in **less than $100$** iterations with each one of the three possible strategies to compute the step.
-
 ## `muparser_interface.hpp`
 It's an interface developed to parse functions (also vector functions) of an arbitrary number of variables. It's adapted from `muParserInterface` inside [`pacs-examples`](https://github.com/pacs-course/pacs-examples.git) repository.
 
