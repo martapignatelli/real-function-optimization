@@ -7,7 +7,7 @@ After cloning the repository with:
 git clone --recurse-submodules git@github.com:alessandropedone/real-function-optimization.git
 ```
 
-Once you are in the right directoryu, you can compile the `muparserx` library by running the provided little script with the command:
+Once you are in the right directoryu, you can compile the `muparserx` and TBB libraries by running the provided little script with the command (this may take a while!).
 
 ```bash
 ./setup.sh
@@ -15,7 +15,7 @@ Once you are in the right directoryu, you can compile the `muparserx` library by
 
 If you encounter an error such as `cmake: command not found`, you can run `sudo apt install cmake` if you are on Debian, Ubuntu, Linux Mint and related distributions (similar commands can be found online for other distributions).
 
-You must have TTB Library installed on your machine, since the execution of elementwise operations is run in parallel using [TBB Library](https://github.com/uxlfoundation/oneTBB). For instance, if you're on Debian (...) you could run the following command in the terminal.
+You must have TTB (Runtime) Library installed on your machine, since the execution of elementwise operations is run in parallel using [TBB Library](https://github.com/uxlfoundation/oneTBB). For instance, if you're on Debian (...) you could run the following command in the terminal.
 ```bash
 sudo apt update
 sudo apt install libtbb-dev
@@ -23,20 +23,30 @@ sudo apt install libtbb-dev
 You can find more information on [Wikipedia](https://en.wikipedia.org/wiki/Threading_Building_Blocks).
 
 ## Implemented Methods
+
 We implemented the following optimization algorithms.
+
 Basic method:
-1. Gradient Descent (GD)
+1. [Gradient Descent](https://en.wikipedia.org/wiki/Gradient_descent) (GD)
+
 Momentum-based methods:
+
 2. Heavy Ball (or Momentum) Method (HB)
 3. Nesterov Accelerated Gradient (NAG)
+
 Adaptive methods:
+
 4. ADAM Method (it combines momentum the benefits of momentum and the adaptiveness of _RMSProp method_)
+
 Second order methods:
-5. Newton's Method
-6. Quasi-Newton Methods
+
+5. [Newton's Method](https://en.wikipedia.org/wiki/Newton%27s_method_in_optimization)
+6. [Quasi-Newton Methods](https://en.wikipedia.org/wiki/Quasi-Newton_method)
+
 Derivative-Free Optimization (DFO) methods:
-7. Powell's Method
-8. Nelder-Mead (Downhill Simplex)
+
+7. [Powell's Method](http://en.wikipedia.org/wiki/Powell%27s_method)
+8. [Nelder-Mead Method](https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method) (Downhill Simplex)
 
 
 ## Enhancements and Optimizations

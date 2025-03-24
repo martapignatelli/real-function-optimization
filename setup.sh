@@ -1,4 +1,4 @@
-# Description: Setup script for muparserx
+# Setup script for muparserx
 cd muparserx
 cmake .
 make
