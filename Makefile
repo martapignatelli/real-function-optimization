@@ -5,7 +5,7 @@ CPPFLAGS ?= -I include -I include/core -I muparserx/parser # Include flags
 
 # Linker flags
 LDFLAGS ?= -L muparserx -Wl,-rpath=muparserx
-LDLIBS  ?= -lmuparserx
+LDLIBS  ?= -lmuparserx -ltbb
 
 # Variables
 EXEC    = main

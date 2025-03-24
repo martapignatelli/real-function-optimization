@@ -19,6 +19,10 @@ enum class DifferenceType
 /// @tparam DT is the difference type: forward, backward or centered
 /// @param f is the callable object of signature T (std::vector<T> const & )
 /// @param h is the step for computing the gradient
+/// @return a callable object of signature std::vector<T> (const std::vector<T> &)
+/// @note it uses the same signature as the input function
+/// @warning it does not check if the input function is valid
+/// @warning it does not check if the step is valid
 /*
  * Example usage: Computing the gradient of sin(x) + sin(y) at x0 = (0, 0)
  * auto f = [](std::vector<double> x) { return std::sin(x[0]) + std::sin(x[1]); };
