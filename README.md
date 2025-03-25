@@ -1,26 +1,28 @@
+
+
+
 # Minimization of a multivariate function
 
 ## Setup
 After cloning the repository with:
 
 ```bash
-git clone --recurse-submodules git@github.com:alessandropedone/real-function-optimization.git
+git clone git@github.com:alessandropedone/real-function-optimization.git
 ```
 
-Once you are in the right directoryu, you can compile the `muparserx` and TBB libraries by running the provided little script with the command (this may take a while!).
+Once you are in the right directory, you can install [*muparserx*](https://github.com/beltoforion/muparserx) (used to parse information from the user) and [*TBB*](https://github.com/uxlfoundation/oneTBB)(used for parallel execution) libraries by running the provided little script with the command.
 
 ```bash
-./setup.sh
+./install_pkgs.sh
 ```
 
-If you encounter an error such as `cmake: command not found`, you can run `sudo apt install cmake` if you are on Debian, Ubuntu, Linux Mint and related distributions (similar commands can be found online for other distributions).
+You can find more information about TBB on [Wikipedia](https://en.wikipedia.org/wiki/Threading_Building_Blocks) and about muparserx on its [website](https://beltoforion.de/en/muparserx/).
 
-You must have TTB (Runtime) Library installed on your machine, since the execution of elementwise operations is run in parallel using [TBB Library](https://github.com/uxlfoundation/oneTBB). For instance, if you're on Debian (...) you could run the following command in the terminal.
+You can uninstall all the required packages running the other bash script running the following command.
+
 ```bash
-sudo apt update
-sudo apt install libtbb-dev
+./uninstall_pkgs.sh
 ```
-You can find more information on [Wikipedia](https://en.wikipedia.org/wiki/Threading_Building_Blocks).
 
 ## Implemented Methods
 
@@ -70,16 +72,21 @@ Two options are available:
    - Centered Differences
 
 ## Design Decisions
-- **Solver Design**: the solver is implemented as a **functor** and its state corresponds to the method's parameters, allowing for modular and reusable design.
+- **Solvers Design**: each solver is implemented as a **functor** and its state corresponds to the method's parameters, allowing for modular and reusable design.
 - **Template Usage**: template programming is used to manage method choices and gradient computation strategies efficiently, as the set of choices is finite and limited in size.
 
-## `data.txt`
+## Relevant files
+
+### `data.txt`
 `data.txt` is used with the aim to take as input all information from the user, exploiting GetPot and muparsex combined.
 The explanation of all input parameters is provided directly inside data.txt as comments.
 This structured file facilitates testing of different optimization scenarios (without recompiling anything).
 
-## `muparser_interface.hpp`
+### `muparser_interface.hpp`
 It's an interface developed to parse functions (also vector functions) of an arbitrary number of variables. It's adapted from `muParserInterface` inside [`pacs-examples`](https://github.com/pacs-course/pacs-examples.git) repository.
+
+### `fd_gradient.hpp`
+WIP
 
 ## Authors
 - Marta Pignatelli ([@martapignatelli](https://github.com/martapignatelli))
