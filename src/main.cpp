@@ -1,15 +1,6 @@
-#include <iostream>
-#include <vector>
-#include <GetPot>
-
-#include "gradient_descent.hpp"
-#include "muparserx_interface.hpp"
-#include "fd_gradient.hpp"
 #include "read.hpp"
 #include "run.hpp"
-#include "heavy_ball.hpp"
-#include "nesterov.hpp"
-#include "adam.hpp"
+
 
 // This is a simple example of how to use the gradient_descent function.
 int main()

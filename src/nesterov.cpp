@@ -1,8 +1,3 @@
-#include <functional>
-#include <iostream>
-#include <cmath>
-#include <limits>
-
 #include "nesterov.hpp"
 
 // Nesterov algorithm

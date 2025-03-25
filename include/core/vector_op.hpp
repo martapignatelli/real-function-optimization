@@ -2,6 +2,10 @@
 #define VECTOR_OP_HPP
 
 #include <vector>
+#include <cmath>
+#include <numeric>   // For std::iota
+#include <execution> // For std::execution::par
+#include <iostream>
 
 // Norm of an std::vector<double>
 double norm(const std::vector<double> &x);

@@ -1,8 +1,4 @@
-#include <vector>
-#include <cmath>
-#include <numeric>   // For std::iota
-#include <execution> // For std::execution::par
-#include <iostream>
+#include "vector_op.hpp"
 
 /**
  * @brief Calculates the Euclidean norm of a vector using a parallel algorithm.

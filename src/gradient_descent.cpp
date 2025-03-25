@@ -1,8 +1,3 @@
-#include <functional>
-#include <iostream>
-#include <cmath>
-#include <limits>
-
 #include "gradient_descent.hpp"
 
 // Gradient descent algorithm

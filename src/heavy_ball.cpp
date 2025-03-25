@@ -1,8 +1,3 @@
-#include <functional>
-#include <iostream>
-#include <cmath>
-#include <limits>
-
 #include "heavy_ball.hpp"
 
 // Heavy Ball algorithm
