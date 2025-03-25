@@ -6,12 +6,30 @@
 #include <type_traits> // for std::is_same_v
 
 // Finite difference types
-enum class DifferenceType
+namespace DifferenceType
 {
-  Forward,
-  Backward,
-  Centered
-};
+  struct Backward; // forward declaration
+  /*!
+   * It expresses the concept of a forward difference
+   */
+  struct Forward
+  {
+    //! I alternate among different types when performing higher derivatives
+    using otherType = Backward;
+  };
+  /*!
+   * It expresses the concept of a backward difference
+   */
+  struct Backward
+  {
+    using otherType = Forward;
+  };
+
+  struct Centered
+  {
+    using otherType = Centered;
+  };
+} // namespace DifferenceType
 
 /// @brief This function computes the gradient of a real valued function by finite differences
 /// @tparam F is the callable object of signature T (std::vector<T> const & )
@@ -29,7 +47,7 @@ enum class DifferenceType
  * auto d4 = derive<decltype(f), double, DifferenceType::Centered>(f, 1.e-4);
  * auto d  = d4(x0); // Computes the gradient of f at x0 (x0 is a vector of size 2)
  */
-template <typename F, typename T, DifferenceType DT>
+template <typename F, typename T, typename DT = DifferenceType::Centered>
 std::function<std::vector<T>(const std::vector<T> &)> gradient(const F &f, const T &h)
 {
   return [=](const std::vector<T> &x) -> std::vector<T>
@@ -44,11 +62,11 @@ std::function<std::vector<T>(const std::vector<T> &)> gradient(const F &f, const
       x_forward[i] += h;
       x_backward[i] -= h;
 
-      if constexpr (DT == DifferenceType::Forward)
+      if constexpr (std::is_same_v<DT, DifferenceType::Forward>)
       {
         grad[i] = (f(x_forward) - f(x)) / h;
       }
-      else if constexpr (DT == DifferenceType::Backward)
+      else if constexpr (std::is_same_v<DT, DifferenceType::Backward>)
       {
         grad[i] = (f(x) - f(x_backward)) / h;
       }
