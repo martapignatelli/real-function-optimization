@@ -7,7 +7,7 @@
 After cloning the repository with:
 
 ```bash
-git clone git@github.com:alessandropedone/real-function-optimization.git
+git clone --recurse-submodules git@github.com:alessandropedone/real-function-optimization.git
 ```
 
 Once you are in the right directory, you can install [*muparserx*](https://github.com/beltoforion/muparserx) (used to parse information from the user) and [*TBB*](https://github.com/uxlfoundation/oneTBB) (used for parallel execution) libraries by running the provided little script with the command.
@@ -23,6 +23,9 @@ You can uninstall all the required packages running the other bash script runnin
 ```bash
 ./uninstall_pkgs.sh
 ```
+Now you are ready to go and by just type `make` you can compile the code. 
+If you want to call the executable type `./main`. 
+You can modify input parameters inside `data.txt`.
 
 ## Implemented Methods
 
