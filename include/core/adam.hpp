@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cmath>
 #include <limits>
+#include <Eigen/Dense>
 
 #include "vector_op.hpp"
 

@@ -63,7 +63,8 @@
         "typeinfo": "cpp"
     },
     "C_Cpp.default.includePath": [
-        "${workspaceFolder}/**"
+        "${workspaceFolder}/include/**",
+        "${workspaceFolder}/eigen/**"
     ],
 
     "C_Cpp.intelliSenseEngine": "default",
