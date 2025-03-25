@@ -48,12 +48,6 @@ Derivative-Free Optimization (DFO) methods:
 7. [Powell's Method](http://en.wikipedia.org/wiki/Powell%27s_method)
 8. [Nelder-Mead Method](https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method) (Downhill Simplex)
 
-
-## Enhancements and Optimizations
-The following optimizations, that we decided to implement, improve the convergence speed and stability of all methods.
-- **Gradient Normalization**: prevents large updates and ensures stable convergence.
-- **Minimum Step Size Constraint**: avoids excessively small steps, guaranteeing progress toward convergence.
-
 ## Test Case
 The implemented methods were validated on the following test function (which has a very steep gradient, also near its minimum):
 
