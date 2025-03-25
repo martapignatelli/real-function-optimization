@@ -10,7 +10,7 @@ After cloning the repository with:
 git clone git@github.com:alessandropedone/real-function-optimization.git
 ```
 
-Once you are in the right directory, you can install [*muparserx*](https://github.com/beltoforion/muparserx) (used to parse information from the user) and [*TBB*](https://github.com/uxlfoundation/oneTBB)(used for parallel execution) libraries by running the provided little script with the command.
+Once you are in the right directory, you can install [*muparserx*](https://github.com/beltoforion/muparserx) (used to parse information from the user) and [*TBB*](https://github.com/uxlfoundation/oneTBB) (used for parallel execution) libraries by running the provided little script with the command.
 
 ```bash
 ./install_pkgs.sh
