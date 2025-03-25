@@ -4,6 +4,7 @@
 
 #include <functional>
 #include <type_traits> // for std::is_same_v
+#include <Eigen/Dense>
 
 // Finite difference types
 namespace DifferenceType

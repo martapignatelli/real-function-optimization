@@ -61,5 +61,10 @@
         "thread": "cpp",
         "cfenv": "cpp",
         "typeinfo": "cpp"
-    }
+    },
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/**"
+    ],
+
+    "C_Cpp.intelliSenseEngine": "default",
 }

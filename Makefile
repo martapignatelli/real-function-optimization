@@ -1,7 +1,7 @@
 # Compiler flags
 CXX      ?= g++
 CXXFLAGS ?= -std=c++20 -Wall -O3
-CPPFLAGS ?= -I include -I include/core  -I $(shell dpkg -L libmuparserx-dev | grep -oP '.*include/muparserx' | sort -u) -I eigen/Eigen
+CPPFLAGS ?= -I include -I include/core  -I $(shell dpkg -L libmuparserx-dev | grep -oP '.*include/muparserx' | sort -u) -I eigen
 
 # Linker flags
 LDFLAGS ?= 
