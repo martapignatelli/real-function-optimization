@@ -88,6 +88,9 @@ It's an interface developed to parse functions (also vector functions) of an arb
 ### `fd_gradient.hpp`
 WIP
 
+## Future development: parallelization
+Parallelizable implementations: `muparser_interface`, `fd_gradient`.
+
 ## Authors
 - Marta Pignatelli ([@martapignatelli](https://github.com/martapignatelli))
 - Alessandro Pedone ([@alessandropedone](https://github.com/alessandropedone))
