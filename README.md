@@ -41,7 +41,7 @@ Momentum-based methods:
 
 Adaptive methods:
 
-4. ADAM Method (it combines momentum the benefits of momentum and the adaptiveness of _RMSProp method_)
+4. ADAM Method (it combines the benefits of momentum and the adaptiveness of _RMSProp method_)
 
 Second order methods:
 
