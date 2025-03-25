@@ -1,12 +1,7 @@
 #ifndef ADAM_HPP
 #define ADAM_HPP
 
-#include <functional>
-#include <iostream>
-#include <cmath>
-#include <limits>
-
-#include "vector_op.hpp"
+#include <Math>
 
 // Parameters for the gradient descent algorithm
 struct AdamParams

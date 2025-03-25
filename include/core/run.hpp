@@ -1,10 +1,7 @@
 #ifndef RUN_HPP
 #define RUN_HPP
 
-#include "gradient_descent.hpp"
-#include "heavy_ball.hpp"
-#include "nesterov.hpp"
-#include "adam.hpp"
+#include <Methods>
 
 /// @brief Prints the computed minimum, function value at the minimum, and gradient norm at the minimum
 /// @param minimum 

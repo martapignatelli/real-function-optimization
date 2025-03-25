@@ -1,12 +1,8 @@
 #ifndef HEAVY_BALL_HPP
 #define HEAVY_BALL_HPP
 
-#include <functional>
-#include <iostream>
-#include <cmath>
-#include <limits>
 
-#include "vector_op.hpp"
+#include <Math>
 
 // Parameters for the gradient descent algorithm
 struct HeavyBallParams

@@ -1,5 +1,4 @@
 #include "run.hpp"
-
 // Prints the computed minimum, function value at the minimum, and gradient norm at the minimum.
 void print_result(const std::vector<double> &minimum, std::function<double(const std::vector<double> &)> f, // Function f
                   std::function<std::vector<double>(const std::vector<double> &)> grad_f)

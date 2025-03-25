@@ -1,12 +1,7 @@
 #ifndef GRADIENT_DESCENT_HPP
 #define GRADIENT_DESCENT_HPP
 
-#include <functional>
-#include <iostream>
-#include <cmath>
-#include <limits>
-
-#include "vector_op.hpp"
+#include <Math>
 
 // Parameters for the gradient descent algorithm
 struct GradientDescentParams

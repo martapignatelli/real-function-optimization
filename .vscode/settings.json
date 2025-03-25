@@ -64,7 +64,8 @@
     },
     "C_Cpp.default.includePath": [
         "${workspaceFolder}/include/**",
-        "${workspaceFolder}/eigen/**"
+        "${workspaceFolder}/eigen/**",
+        "${workspaceFolder}/eigen"
     ],
 
     "C_Cpp.intelliSenseEngine": "default",
