@@ -76,7 +76,8 @@
     "C_Cpp.default.includePath": [
         "${workspaceFolder}/include/**",
         "${workspaceFolder}/eigen/**",
-        "${workspaceFolder}/eigen"
+        "${workspaceFolder}/eigen",
+        "${workspaceFolder}/include/methods"
     ],
     "C_Cpp.intelliSenseEngine": "default",
     "[cpp]": {

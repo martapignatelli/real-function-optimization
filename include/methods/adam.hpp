@@ -1,19 +1,11 @@
 #ifndef ADAM_HPP
 #define ADAM_HPP
 
-#include <Math>
+#include "method.hpp"
 
 // Parameters for the gradient descent algorithm
-struct AdamParams
+struct AdamParams : public Params
 {
-    scalar_function f;             // Function f
-    vector_function grad_f;        // Gradient of f
-    vector_type initial_condition; // Initial condition
-    scalar_type tolerance_r;       // Tolerance for convergence (residual)
-    scalar_type tolerance_s;       // Tolerance for convergence (step length)
-    scalar_type initial_step;      // Initial step size αlpha0
-    int_type max_iterations;       // Maximal number of iterations
-    scalar_type minimum_step;      // Minimum step size
     scalar_type mu;                // Parameter for the exponential decay and the inverse decay
     scalar_type beta1;             // Exponential decay rate for 1st moment estimate
     scalar_type beta2;             // Exponential decay rate for 2nd moment estimate
@@ -28,7 +20,7 @@ enum class AdamType
 
 // Adam algorithm
 template <AdamType T>
-class Adam
+class Adam : public Method
 {
 
 public:
@@ -78,7 +70,7 @@ public:
      *
      * @note The algorithm also uses a small number \f$ \epsilon \f$ to avoid division by zero.
      */
-    vector_type operator()() const
+    vector_type operator()() const override
     {
         vector_type x = vector_type::Map(params.initial_condition.data(), params.initial_condition.size());
         scalar_type alpha = params.initial_step;
@@ -89,7 +81,7 @@ public:
         vector_type vhat = vector_type::Zero(x.size());           // 2nd moment estimate normalised
         scalar_type beta1_iter = params.beta1;                    // beta1 elevated to the number of iterations
         scalar_type beta2_iter = params.beta2;                    // beta2 elevated to the number of iterations
-        int_type iteration = 0;
+        index_type iteration = 0;
 
         for (iteration = 0; iteration < params.max_iterations; ++iteration)
         {
@@ -145,37 +137,8 @@ public:
         return x;
     };
 
-    /**
-     * Run the Adam algorithm.
-     *
-     * This function takes two functions as optional arguments: f and grad_f
-     * and an initial condition.
-     *
-     * @param f The function to optimize.
-     * @param grad_f The gradient of the function to optimize.
-     * @param initial_condition The initial condition of the algorithm.
-     * @return The minimum of the function.
-     */
-    vector_type operator()(
-        scalar_function f,
-        vector_function grad_f,
-        const vector_type &initial_condition)
-    {
-        params.f = f;
-        params.grad_f = grad_f;
-        params.initial_condition = initial_condition;
-        return operator()();
-    };
-
     // Getters
-    scalar_function get_f() const { return params.f; }
-    vector_function get_grad_f() const { return params.grad_f; }
-    vector_type get_initial_condition() const { return params.initial_condition; }
-    scalar_type get_tolerance_r() const { return params.tolerance_r; }
-    scalar_type get_tolerance_s() const { return params.tolerance_s; }
-    scalar_type get_initial_step() const { return params.initial_step; }
-    int_type get_max_iterations() const { return params.max_iterations; }
-    scalar_type get_minimum_step() const { return params.minimum_step; }
+    const Params &get_params() const override { return params; }
     scalar_type get_mu() const { return params.mu; }
     scalar_type get_beta1() const { return params.beta1; }
     scalar_type get_beta2() const { return params.beta2; }
@@ -200,25 +163,7 @@ public:
         {
             std::cout << "Descend type: constant step size" << std::endl;
         }
-        std::cout << "The parameters of this method are:" << std::endl;
-        std::cout << "initial_condition: (";
-        bool first = true;
-        for (int i = 0; i < params.initial_condition.size(); ++i)
-        {
-            if (!first)
-            {
-                std::cout << ", ";
-            }
-            std::cout << params.initial_condition[i];
-            first = false;
-        }
-        std::cout << ")";
-        std::cout << std::endl;
-        std::cout << "tolerance_r: " << params.tolerance_r << std::endl;
-        std::cout << "tolerance_s: " << params.tolerance_s << std::endl;
-        std::cout << "initial_step: " << params.initial_step << std::endl;
-        std::cout << "max_iterations: " << params.max_iterations << std::endl;
-        std::cout << "minimum_step: " << params.minimum_step << std::endl;
+        Method::print();
         std::cout << "mu: " << params.mu << std::endl;
         std::cout << "beta1: " << params.beta1 << std::endl;
         std::cout << "beta2: " << params.beta2 << std::endl;

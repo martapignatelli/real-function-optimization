@@ -1,7 +1,7 @@
 # Compiler flags
 CXX      ?= g++
 CXXFLAGS ?= -std=c++20 -Wall -O3
-CPPFLAGS ?= -I eigen -I include -I include/core  -I $(shell dpkg -L libmuparserx-dev | grep -oP '.*include/muparserx' | sort -u) 
+CPPFLAGS ?= -I eigen -I include -I include/core  -I include/methods -I $(shell dpkg -L libmuparserx-dev | grep -oP '.*include/muparserx' | sort -u) 
 
 # Linker flags
 LDFLAGS ?= 
@@ -12,7 +12,7 @@ EXEC    = main
 SRC_DIR = src
 SRCS 	= $(shell find $(SRC_DIR) -name '*.cpp')
 OBJS    = $(SRCS:.cpp=.o)
-HEADERS = $(shell find include -maxdepth 1 -name '*.hpp')
+HEADERS = $(shell find include -maxdepth 1) $(shell find include/methods -maxdepth 1 -name '*.hpp')
 
 # Default target
 all: $(EXEC)

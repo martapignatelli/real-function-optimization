@@ -18,4 +18,5 @@ using scalar_type = double;
 using int_type = int;
 using vector_function = std::function<vector_type(const vector_type &)>;
 using scalar_function = std::function<scalar_type(const vector_type &)>;
+using index_type = long int;
 

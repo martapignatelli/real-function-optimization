@@ -6,7 +6,8 @@
                 "${workspaceFolder}/include/**",
                 "${workspaceFolder}/eigen/**",
                 "${workspaceFolder}/eigen",
-                "/usr/include/muparserx"
+                "/usr/include/muparserx",
+                "${workspaceFolder}/include/methods"
             ],
             "defines": [],
             "cStandard": "c17",

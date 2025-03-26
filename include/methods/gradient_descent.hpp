@@ -1,21 +1,13 @@
 #ifndef GRADIENT_DESCENT_HPP
 #define GRADIENT_DESCENT_HPP
 
-#include <Math>
+#include "method.hpp"
 
 // Parameters for the gradient descent algorithm
-struct GradientDescentParams
+struct GradientDescentParams : public Params
 {
-    scalar_function f;             // Function f
-    vector_function grad_f;        // Gradient of f
-    vector_type initial_condition; // Initial condition
-    scalar_type tolerance_r;       // Tolerance for convergence (residual)
-    scalar_type tolerance_s;       // Tolerance for convergence (step length)
-    scalar_type initial_step;      // Initial step size αlpha0
-    int_type max_iterations;       // Maximal number of iterations
-    scalar_type minimum_step;      // Minimum step size for the Armijo rule
-    scalar_type sigma;             // Parameter for the Armijo rule
-    scalar_type mu;                // Parameter for the exponential decay and the inverse decay
+    scalar_type sigma; // Parameter for the Armijo rule
+    scalar_type mu;    // Parameter for the exponential decay and the inverse decay
 };
 
 // Descent types
@@ -29,7 +21,7 @@ enum class GradientDescentType
 // Gradient descent algorithm
 // T is the type of the descent strategy
 template <GradientDescentType T>
-class GradientDescent
+class GradientDescent : public Method
 {
 
 public:
@@ -71,11 +63,11 @@ public:
      * @note The algorithm also uses a small number \f$ \epsilon \f$ to avoid
      * division by zero.
      */
-    vector_type operator()() const
+    vector_type operator()() const override
     {
         vector_type x = Eigen::Map<const vector_type>(params.initial_condition.data(), params.initial_condition.size());
         scalar_type alpha = params.initial_step;
-        int_type iteration = 0;
+        index_type iteration = 0;
 
         for (iteration = 0; iteration < params.max_iterations; ++iteration)
         {
@@ -133,28 +125,10 @@ public:
         return x;
     };
 
-    vector_type operator()(
-        scalar_function f,
-        vector_function grad_f,
-        const vector_type &initial_condition)
-    {
-        params.f = f;
-        params.grad_f = grad_f;
-        params.initial_condition = initial_condition;
-        return operator()();
-    };
-
     // Getters
-    scalar_function get_f() const { return params.f; }
-    vector_function get_grad_f() const { return params.grad_f; }
-    vector_type get_initial_condition() const { return params.initial_condition; }
-    scalar_type get_tolerance_r() const { return params.tolerance_r; }
-    scalar_type get_tolerance_s() const { return params.tolerance_s; }
-    scalar_type get_initial_step() const { return params.initial_step; }
-    int get_max_iterations() const { return params.max_iterations; }
-
-    // Initial condition setter
-    void set_initial_condition(const vector_type &initial_condition) { params.initial_condition = initial_condition; }
+    const Params &get_params() const override { return params; }
+    scalar_type get_mu() const { return params.mu; }
+    scalar_type get_sigma() const { return params.sigma; }
 
     /**
      * Prints the parameters of the gradient descent algorithm.
@@ -179,25 +153,7 @@ public:
         {
             std::cout << "Descend type: Armijo for the step size" << std::endl;
         }
-        std::cout << "The parameters of this method are:" << std::endl;
-        std::cout << "initial_condition: (";
-        bool first = true;
-        for (int i = 0; i < params.initial_condition.size(); ++i)
-        {
-            if (!first)
-            {
-                std::cout << ", ";
-            }
-            std::cout << params.initial_condition[i];
-            first = false;
-        }
-        std::cout << ")";
-        std::cout << "\b)" << std::endl;
-        std::cout << "tolerance_r: " << params.tolerance_r << std::endl;
-        std::cout << "tolerance_s: " << params.tolerance_s << std::endl;
-        std::cout << "initial_step: " << params.initial_step << std::endl;
-        std::cout << "max_iterations: " << params.max_iterations << std::endl;
-        std::cout << "minimum_step: " << params.minimum_step << std::endl;
+        Method::print();
         std::cout << "mu: " << params.mu << std::endl;
         std::cout << "sigma: " << params.sigma << std::endl;
     };
