@@ -2,37 +2,37 @@
 
 // Adam algorithm
 template <AdamType T>
-std::vector<double> Adam<T>::operator()() const
+Eigen::VectorXd Adam<T>::operator()() const
 {
-    std::vector<double> x = params.initial_condition;
+    Eigen::VectorXd x = Eigen::VectorXd::Map(params.initial_condition.data(), params.initial_condition.size());
     double alpha = params.initial_step;
-    std::vector<double> espilon(x.size(), 1e-8); // small number to avoid division by zero
-    std::vector<double> m(x.size(), 0);          // first moment estimate
-    std::vector<double> mhat(x.size(), 0);       // 1st moment estimate normalised
-    std::vector<double> v(x.size(), 0);          // second moment estimate
-    std::vector<double> vhat(x.size(), 0);       // 2nd moment estimate normalised
-    double beta1_iter = params.beta1;            // beta1 elevated to the number of iterations
-    double beta2_iter = params.beta2;            // beta2 elevated to the number of iterations
+    Eigen::VectorXd epsilon = Eigen::VectorXd::Ones(x.size()) * 1e-8; // small number to avoid division by zero
+    Eigen::VectorXd m = Eigen::VectorXd::Zero(x.size());                // first moment estimate
+    Eigen::VectorXd mhat = Eigen::VectorXd::Zero(x.size());             // 1st moment estimate normalised
+    Eigen::VectorXd v = Eigen::VectorXd::Zero(x.size());                // second moment estimate
+    Eigen::VectorXd vhat = Eigen::VectorXd::Zero(x.size());             // 2nd moment estimate normalised
+    double beta1_iter = params.beta1;                                    // beta1 elevated to the number of iterations
+    double beta2_iter = params.beta2;                                    // beta2 elevated to the number of iterations
     int iteration = 0;
 
     for (iteration = 0; iteration < params.max_iterations; ++iteration)
     {
         // Compute the gradient at the current point
-        std::vector<double> grad = params.grad_f(x);
+        Eigen::VectorXd grad = Eigen::VectorXd::Map(params.grad_f(x).data(), params.grad_f(x).size());
 
         // Check for convergence (norm of the gradient)
-        double residual = norm(grad);
+        double residual = grad.norm();
         if (residual < params.tolerance_r)
         {
             std::cout << "Converged in " << iteration << " iterations thanks to residual criterion." << std::endl;
             break;
         }
 
-        std::vector<double> x_prev = x;
+        Eigen::VectorXd x_prev = x;
 
         // Update the current point and auxiliary elements
         m = params.beta1 * m + (1 - params.beta1) * grad;
-        v = params.beta2 * v + (1 - params.beta2) * elemwise_product(grad, grad);
+        v = params.beta2 * v + (1 - params.beta2) * grad.array().square().matrix();
         // Correct bias in moment estimates and update
         mhat = 1 / (1 - beta1_iter) * m;
         vhat = 1 / (1 - beta2_iter) * v;
@@ -42,20 +42,20 @@ std::vector<double> Adam<T>::operator()() const
         if (alpha > params.minimum_step)
         {
             if constexpr (T == AdamType::dynamic)
-           {
+            {
                 // Adaptive dynamic decay of the step size 
                 alpha = params.initial_step * std::sqrt(1 - beta2_iter) / (1 - beta1_iter);          
             }
-            // if constexpr (T == AdamType:constant) // not needed
+            // if constexpr (T == AdamType::constant) // not needed
         }
 
-        x = x - alpha * elemwise_division(mhat, (elemwise_sqrt(vhat) + espilon));
+        x = x - alpha * (mhat.array() / (vhat.array().sqrt() + epsilon.array())).matrix();
 
         beta1_iter *= params.beta1;
         beta2_iter *= params.beta2;
 
         // Check for convergence (step size)
-        double step_size = norm(x - x_prev);
+        double step_size = (x - x_prev).norm();
         if (step_size < params.tolerance_s)
         {
             std::cout << "Converged in " << iteration << " iterations thanks to step size criterion." << std::endl;
@@ -84,17 +84,17 @@ void Adam<T>::print() const
     std::cout << "The parameters of this method are:" << std::endl;
     std::cout << "initial_condition: (";
     bool first = true;
-    for (const auto &var : params.initial_condition)
+    for (int i = 0; i < params.initial_condition.size(); ++i)
     {
         if (!first)
         {
             std::cout << ", ";
         }
-        std::cout << var;
+        std::cout << params.initial_condition[i];
         first = false;
     }
     std::cout << ")";
-    std::cout << "\b)" << std::endl;
+    std::cout << std::endl;
     std::cout << "tolerance_r: " << params.tolerance_r << std::endl;
     std::cout << "tolerance_s: " << params.tolerance_s << std::endl;
     std::cout << "initial_step: " << params.initial_step << std::endl;

@@ -5,18 +5,17 @@ GradientDescentParams read_gradient_descent(const GetPot &datafile)
     const int N = datafile.vector_variable_size("initial_condition");                                      // Dimension of the problem
     const std::string f_str = datafile("f", "4*x[0]*x[0]*x[0]*x[0] + 2*x[1]*x[1] + 2*x[0]*x[1] + 2*x[0]"); // Function f
     std::cout << "Function to be optimized: " << f_str << std::endl;
-    muParserXScalarInterface f(f_str, N);                        // Initialize the function with muparserx
-    const bool fd = datafile("fd", true);                        // Use finite differences to compute the gradient
-    const double tolerance_r = datafile("tolerance_r", 1e-6);    // Tolerance for convergence (residual)
-    const double tolerance_s = datafile("tolerance_s", 1e-6);    // Tolerance for convergence (step length)
-    const double initial_step = datafile("initial_step", 1.0);   // Initial step size αlpha0
-    const int max_iterations = datafile("max_iterations", 1000); // Maximal number of iterations
-    const double mu = datafile("mu", 0.2);                       // Parameter for the exponential and inverse decay
-    std::vector<double> initial_condition(N, 0);                 // Initial condition
+    muParserXScalarInterface f(f_str, N);                         // Initialize the function with muparserx
+    const bool fd = datafile("fd", true);                         // Use finite differences to compute the gradient
+    const double tolerance_r = datafile("tolerance_r", 1e-6);     // Tolerance for convergence (residual)
+    const double tolerance_s = datafile("tolerance_s", 1e-6);     // Tolerance for convergence (step length)
+    const double initial_step = datafile("initial_step", 1.0);    // Initial step size αlpha0
+    const int max_iterations = datafile("max_iterations", 1000);  // Maximal number of iterations
+    const double mu = datafile("mu", 0.2);                        // Parameter for the exponential and inverse decay
+    Eigen::VectorXd initial_condition = Eigen::VectorXd::Zero(N); // Initial condition
     if (N > 0)
     {
         // If entries exist, parse them
-        initial_condition.resize(N);
         for (int i = 0; i < N; ++i)
         {
             initial_condition[i] = datafile("initial_condition", 0.0, i); // default 0.0 if not found
@@ -25,7 +24,7 @@ GradientDescentParams read_gradient_descent(const GetPot &datafile)
     else
     {
         // Default values
-        initial_condition = {0., 0.};
+        initial_condition = Eigen::VectorXd::Zero(2);
     }
     // Gradient descent specific paramters
     const double minimum_step = datafile("minimum_step", 1e-2); // Minimum step size for the Armijo rule
@@ -38,7 +37,7 @@ GradientDescentParams read_gradient_descent(const GetPot &datafile)
         const std::string fd_t = datafile("fd_t", "Centered");
         const double h = datafile("h", 1e-2);
         std::cout << "Finite differences type: " << fd_t << " (h = " << h << ")" << std::endl;
-        std::function<std::vector<double>(const std::vector<double> &)> df_grad_f;
+        std::function<Eigen::VectorXd(const Eigen::VectorXd &)> df_grad_f;
         if (fd_t == "Forward")
         {
             df_grad_f = gradient<decltype(f), double, DifferenceType::Forward>(f, h);
@@ -90,18 +89,17 @@ HeavyBallParams read_heavy_ball(const GetPot &datafile)
     const int N = datafile.vector_variable_size("initial_condition");                                      // Dimension of the problem
     const std::string f_str = datafile("f", "4*x[0]*x[0]*x[0]*x[0] + 2*x[1]*x[1] + 2*x[0]*x[1] + 2*x[0]"); // Function f
     std::cout << "Function to be optimized: " << f_str << std::endl;
-    muParserXScalarInterface f(f_str, N);                        // Initialize the function with muparserx
-    const bool fd = datafile("fd", true);                        // Use finite differences to compute the gradient
-    const double tolerance_r = datafile("tolerance_r", 1e-6);    // Tolerance for convergence (residual)
-    const double tolerance_s = datafile("tolerance_s", 1e-6);    // Tolerance for convergence (step length)
-    const double initial_step = datafile("initial_step", 1.0);   // Initial step size αlpha0
-    const int max_iterations = datafile("max_iterations", 1000); // Maximal number of iterations
-    const double mu = datafile("mu", 0.2);                       // Parameter for the exponential and inverse decay
-    std::vector<double> initial_condition(N, 0);                 // Initial condition
+    muParserXScalarInterface f(f_str, N);                         // Initialize the function with muparserx
+    const bool fd = datafile("fd", true);                         // Use finite differences to compute the gradient
+    const double tolerance_r = datafile("tolerance_r", 1e-6);     // Tolerance for convergence (residual)
+    const double tolerance_s = datafile("tolerance_s", 1e-6);     // Tolerance for convergence (step length)
+    const double initial_step = datafile("initial_step", 1.0);    // Initial step size αlpha0
+    const int max_iterations = datafile("max_iterations", 1000);  // Maximal number of iterations
+    const double mu = datafile("mu", 0.2);                        // Parameter for the exponential and inverse decay
+    Eigen::VectorXd initial_condition = Eigen::VectorXd::Zero(N); // Initial condition
     if (N > 0)
     {
         // If entries exist, parse them
-        initial_condition.resize(N);
         for (int i = 0; i < N; ++i)
         {
             initial_condition[i] = datafile("initial_condition", 0.0, i); // default 0.0 if not found
@@ -110,7 +108,7 @@ HeavyBallParams read_heavy_ball(const GetPot &datafile)
     else
     {
         // Default values
-        initial_condition = {0., 0.};
+        initial_condition = Eigen::VectorXd::Zero(2);
     }
 
     // Heavy ball specific paramters
@@ -124,7 +122,7 @@ HeavyBallParams read_heavy_ball(const GetPot &datafile)
         const std::string fd_t = datafile("fd_t", "Centered");
         const double h = datafile("h", 1e-2);
         std::cout << "Finite differences type: " << fd_t << " (h = " << h << ")" << std::endl;
-        std::function<std::vector<double>(const std::vector<double> &)> df_grad_f;
+        std::function<Eigen::VectorXd(const Eigen::VectorXd &)> df_grad_f;
         if (fd_t == "Forward")
         {
             df_grad_f = gradient<decltype(f), double, DifferenceType::Forward>(f, h);
@@ -176,18 +174,17 @@ NesterovParams read_nesterov(const GetPot &datafile)
     const int N = datafile.vector_variable_size("initial_condition");                                      // Dimension of the problem
     const std::string f_str = datafile("f", "4*x[0]*x[0]*x[0]*x[0] + 2*x[1]*x[1] + 2*x[0]*x[1] + 2*x[0]"); // Function f
     std::cout << "Function to be optimized: " << f_str << std::endl;
-    muParserXScalarInterface f(f_str, N);                        // Initialize the function with muparserx
-    const bool fd = datafile("fd", true);                        // Use finite differences to compute the gradient
-    const double tolerance_r = datafile("tolerance_r", 1e-6);    // Tolerance for convergence (residual)
-    const double tolerance_s = datafile("tolerance_s", 1e-6);    // Tolerance for convergence (step length)
-    const double initial_step = datafile("initial_step", 1.0);   // Initial step size αlpha0
-    const int max_iterations = datafile("max_iterations", 1000); // Maximal number of iterations
-    const double mu = datafile("mu", 0.2);                       // Parameter for the exponential and inverse decay
-    std::vector<double> initial_condition(N, 0);                 // Initial condition
+    muParserXScalarInterface f(f_str, N);                         // Initialize the function with muparserx
+    const bool fd = datafile("fd", true);                         // Use finite differences to compute the gradient
+    const double tolerance_r = datafile("tolerance_r", 1e-6);     // Tolerance for convergence (residual)
+    const double tolerance_s = datafile("tolerance_s", 1e-6);     // Tolerance for convergence (step length)
+    const double initial_step = datafile("initial_step", 1.0);    // Initial step size αlpha0
+    const int max_iterations = datafile("max_iterations", 1000);  // Maximal number of iterations
+    const double mu = datafile("mu", 0.2);                        // Parameter for the exponential and inverse decay
+    Eigen::VectorXd initial_condition = Eigen::VectorXd::Zero(N); // Initial condition
     if (N > 0)
     {
         // If entries exist, parse them
-        initial_condition.resize(N);
         for (int i = 0; i < N; ++i)
         {
             initial_condition[i] = datafile("initial_condition", 0.0, i); // default 0.0 if not found
@@ -196,7 +193,7 @@ NesterovParams read_nesterov(const GetPot &datafile)
     else
     {
         // Default values
-        initial_condition = {0., 0.};
+        initial_condition = Eigen::VectorXd::Zero(2);
     }
 
     // Nesterov specific paramters
@@ -210,7 +207,7 @@ NesterovParams read_nesterov(const GetPot &datafile)
         const std::string fd_t = datafile("fd_t", "Centered");
         const double h = datafile("h", 1e-2);
         std::cout << "Finite differences type: " << fd_t << " (h = " << h << ")" << std::endl;
-        std::function<std::vector<double>(const std::vector<double> &)> df_grad_f;
+        std::function<Eigen::VectorXd(const Eigen::VectorXd &)> df_grad_f;
         if (fd_t == "Forward")
         {
             df_grad_f = gradient<decltype(f), double, DifferenceType::Forward>(f, h);
@@ -271,11 +268,10 @@ AdamParams read_adam(const GetPot &datafile)
     const double minimum_step = datafile("minimum_step", 1e-6);  // Minimum step size
     const double mu = datafile("mu", 0.2);                       // Parameter for the exponential decay and the inverse decay
 
-    std::vector<double> initial_condition(N, 0); // Initial condition
+    Eigen::VectorXd initial_condition = Eigen::VectorXd::Zero(N); // Initial condition
     if (N > 0)
     {
         // If entries exist, parse them
-        initial_condition.resize(N);
         for (int i = 0; i < N; ++i)
         {
             initial_condition[i] = datafile("initial_condition", 0.0, i); // default 0.0 if not found
@@ -284,7 +280,7 @@ AdamParams read_adam(const GetPot &datafile)
     else
     {
         // Default values
-        initial_condition = {0., 0.};
+        initial_condition = Eigen::VectorXd::Zero(2);
     }
 
     // Adam specific paramters
@@ -298,7 +294,7 @@ AdamParams read_adam(const GetPot &datafile)
         const std::string fd_t = datafile("fd_t", "Centered");
         const double h = datafile("h", 1e-2);
         std::cout << "Finite differences type: " << fd_t << " (h = " << h << ")" << std::endl;
-        std::function<std::vector<double>(const std::vector<double> &)> df_grad_f;
+        std::function<Eigen::VectorXd(const Eigen::VectorXd &)> df_grad_f;
         if (fd_t == "Forward")
         {
             df_grad_f = gradient<decltype(f), double, DifferenceType::Forward>(f, h);
@@ -329,7 +325,7 @@ AdamParams read_adam(const GetPot &datafile)
     {
         const std::string grad_f_str = datafile("grad_f", "{16*x[0]*x[0]*x[0] + 2*x[1] +2, 4*x[1]+2*x[0]}"); // Gradient of f
         muParserXInterface grad_f(grad_f_str, N);                                                            // Initialize the gradient with muparserx
-        // Parameters for the gradient descent algorithm
+        // Parameters for the algorithm
         params = {
             f,
             grad_f,

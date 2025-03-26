@@ -2,10 +2,9 @@
 
 // Gradient descent algorithm
 template <GradientDescentType T>
-std::vector<double> GradientDescent<T>::operator()() const
+Eigen::VectorXd GradientDescent<T>::operator()() const
 {
-
-    std::vector<double> x = params.initial_condition;
+    Eigen::VectorXd x = Eigen::Map<const Eigen::VectorXd>(params.initial_condition.data(), params.initial_condition.size());
     double alpha = params.initial_step;
     int iteration = 0;
 
@@ -13,10 +12,10 @@ std::vector<double> GradientDescent<T>::operator()() const
     {
         // Compute the gradient at the current point
         // source of error
-        std::vector<double> grad = params.grad_f(x);
+        Eigen::VectorXd grad = params.grad_f(x);
 
         // Check for convergence (norm of the gradient)
-        double residual = norm(grad);
+        double residual = grad.norm();
         if (residual < params.tolerance_r)
         {
             std::cout << "Converged in " << iteration << " iterations thanks to residual criterion." << std::endl;
@@ -34,7 +33,6 @@ std::vector<double> GradientDescent<T>::operator()() const
             alpha *= std::exp(-params.mu);
         }
         else if constexpr (T == GradientDescentType::inverse)
-
         {
             // Adaptive inverse decay of the step size (improvement)
             alpha = params.initial_step / (1 + params.mu * iteration * (1 / residual));
@@ -43,17 +41,17 @@ std::vector<double> GradientDescent<T>::operator()() const
         {
             alpha = params.initial_step;
             // Armijo rule for the step size
-            while (alpha > params.minimum_step && params.f(x) - params.f(x - alpha * grad) < params.sigma * alpha * norm_squared(grad))
+            while (alpha > params.minimum_step && params.f(x) - params.f(x - alpha * grad) < params.sigma * alpha * grad.squaredNorm())
                 alpha *= 0.5;
         }
 
-        std::vector<double> x_prev = x;
+        Eigen::VectorXd x_prev = x;
 
         // Update the current point
         x = x - alpha * grad;
 
         // Check for convergence (step size)
-        double step_size = norm(x - x_prev);
+        double step_size = (x - x_prev).norm();
         if (step_size < params.tolerance_s)
         {
             std::cout << "Converged in " << iteration << " iterations thanks to step size criterion." << std::endl;
@@ -85,13 +83,13 @@ void GradientDescent<T>::print() const
     std::cout << "The parameters of this method are:" << std::endl;
     std::cout << "initial_condition: (";
     bool first = true;
-    for (const auto &var : params.initial_condition)
+    for (int i = 0; i < params.initial_condition.size(); ++i)
     {
         if (!first)
         {
             std::cout << ", ";
         }
-        std::cout << var;
+        std::cout << params.initial_condition[i];
         first = false;
     }
     std::cout << ")";

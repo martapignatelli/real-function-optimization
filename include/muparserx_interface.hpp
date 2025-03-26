@@ -107,36 +107,48 @@ public:
      * @param x Vector of input variable values.
      * @return Vector of evaluated results.
      */
-    std::vector<double>
-    operator()(const std::vector<double> &x) const
+    Eigen::VectorXd operator()(const Eigen::VectorXd &x) const
     {
+        // Assign input values to the parser's variable storage
         for (unsigned i = 0; i < N; ++i)
         {
-            M_value.At(i) = x[i];
+            M_value.At(i) = x(i);
         }
+
         mup::Value val;
-        std::vector<double> vec{};
+        Eigen::VectorXd vec;
         try
         {
+            // Evaluate the parsed expression
             val = M_parser.Eval();
-            if (val.IsScalar()) {
-                vec.push_back(val.GetFloat());
-            } else {
+
+            if (val.IsScalar())
+            {
+                // If the result is a scalar, return a single-element vector
+                vec = Eigen::VectorXd(1);
+                vec(0) = val.GetFloat();
+            }
+            else
+            {
+                // If the result is a matrix, extract its values
                 unsigned rows = val.GetRows();
                 unsigned cols = val.GetCols();
-                for (unsigned i = 0; i < rows; ++i) {
-                    for (unsigned j = 0; j < cols; ++j) {
-                        vec.push_back(val.At(i, j).GetFloat());
+                vec = Eigen::VectorXd(rows * cols);
+
+                for (unsigned i = 0; i < rows; ++i)
+                {
+                    for (unsigned j = 0; j < cols; ++j)
+                    {
+                        vec(i * cols + j) = val.At(i, j).GetFloat();
                     }
                 }
             }
         }
         catch (mup::ParserError &error)
         {
-            std::cerr << "Muparsex error with code:" << error.GetCode()
-                      << std::endl;
-            std::cerr << "While processing expression: " << error.GetExpr()
-                      << std::endl;
+            // Handle parsing errors
+            std::cerr << "Muparsex error with code:" << error.GetCode() << std::endl;
+            std::cerr << "While processing expression: " << error.GetExpr() << std::endl;
             std::cerr << "Error Message: " << error.GetMsg() << std::endl;
             throw error;
         }
@@ -153,7 +165,6 @@ protected:
     mutable unsigned N;
 };
 
-
 /*!
  * Specialized class for scalar-valued functions
  *
@@ -162,7 +173,7 @@ protected:
 class muParserXScalarInterface : public muParserXInterface
 {
 public:
-//! Constructor
+    //! Constructor
     /*!
      * Initializes scalar interface with an expression and number of variables.
      *
@@ -178,10 +189,10 @@ public:
      * @param x Vector of input variable values.
      * @return Single scalar result.
      */
-    double operator()(const std::vector<double> &x) const
+    double operator()(const Eigen::VectorXd &x) const
     {
-        std::vector<double> vec = muParserXInterface::operator()({x});
-        return vec.empty() ? 0.0 : vec[0];
+        Eigen::VectorXd vec = muParserXInterface::operator()({x});
+        return vec.size() == 0 ? 0.0 : vec(0);
     }
 };
 

@@ -2,21 +2,20 @@
 
 // Heavy Ball algorithm
 template <HeavyBallType T, HeavyBallStrategy S>
-std::vector<double> HeavyBall<T, S>::operator()() const
+Eigen::VectorXd HeavyBall<T, S>::operator()() const
 {
-
-    std::vector<double> x = params.initial_condition;
+    Eigen::VectorXd x = Eigen::Map<const Eigen::VectorXd>(params.initial_condition.data(), params.initial_condition.size());
     double alpha = params.initial_step;
     int iteration = 0;
-    std::vector<double> d(params.initial_condition.size(), 0.0);
+    Eigen::VectorXd d = Eigen::VectorXd::Zero(params.initial_condition.size());
 
     for (iteration = 0; iteration < params.max_iterations; ++iteration)
     {
         // Compute the gradient at the current point
-        std::vector<double> grad = params.grad_f(x);
+        Eigen::VectorXd grad = Eigen::Map<const Eigen::VectorXd>(params.grad_f(x).data(), params.grad_f(x).size());
 
         // Check for convergence (norm of the gradient)
-        double residual = norm(grad);
+        double residual = grad.norm();
         if (residual < params.tolerance_r)
         {
             std::cout << "Converged in " << iteration << " iterations thanks to residual criterion." << std::endl;
@@ -47,7 +46,6 @@ std::vector<double> HeavyBall<T, S>::operator()() const
         {
             if (alpha < 1)
             {
-                
                 d = (1.0 - alpha) * d - alpha * grad;
                 x = x + d;
             }
@@ -64,7 +62,7 @@ std::vector<double> HeavyBall<T, S>::operator()() const
         }
 
         // Check for convergence (step size)
-        double step_size = norm(d);
+        double step_size = d.norm();
         if (step_size < params.tolerance_s)
         {
             std::cout << "Converged in " << iteration << " iterations thanks to step size criterion." << std::endl;
@@ -105,16 +103,16 @@ void HeavyBall<T, S>::print() const
     std::cout << "The parameters of this method are:" << std::endl;
     std::cout << "initial_condition: (";
     bool first = true;
-    for (const auto &var : params.initial_condition)
+    for (int i = 0; i < params.initial_condition.size(); ++i)
     {
         if (!first)
         {
             std::cout << ", ";
         }
-        std::cout << var;
+        std::cout << params.initial_condition[i];
         first = false;
     }
-    std::cout << ")";
+    std::cout << ")"; 
     std::cout << "\b)" << std::endl;
     std::cout << "tolerance_r: " << params.tolerance_r << std::endl;
     std::cout << "tolerance_s: " << params.tolerance_s << std::endl;

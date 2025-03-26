@@ -1,7 +1,6 @@
 #ifndef FD_HESSIAN_HPP
 #define FD_HESSIAN_HPP
 
-#include <functional>
 #include "fd_gradient.hpp"
 
 /**
@@ -19,30 +18,30 @@
  * auto d4 = derive<decltype(f), double, DifferenceType::Centered>(f, 1.e-4);
  * auto d  = d4(x0); // Computes the Hessian of f at x0 (x0 is a vector of size 2)
  */
+
 template <typename F, typename T, typename DT = DifferenceType::Centered>
-std::function<std::vector<std::vector<T>>(const std::vector<T> &)> hessian(const F &f, const T &h)
+std::function<Eigen::MatrixXd(const Eigen::VectorXd &)> hessian(const F &f, const T &h)
 {
-
-    return [=](const std::vector<T> &x) -> std::vector<std::vector<T>>
+    return [=](const Eigen::VectorXd &x) -> Eigen::MatrixXd
     {
-        // initialize the hessian
-        std::vector<std::vector<T>> hessian(x.size(), std::vector<T>(x.size(), 0));
+        // Initialize the Hessian matrix
+        Eigen::MatrixXd hessian = Eigen::MatrixXd::Zero(x.size(), x.size());
 
-        // compute the gradient with finite differences (DT type)
+        // Compute the gradient with finite differences (DT type)
         auto grad = gradient<decltype(f), double, DT>(f, h);
 
-        // compute the hessian
-        for (std::size_t i = 0; i < grad.size(); ++i)
+        // Compute the Hessian
+        for (int i = 0; i < x.size(); ++i)
         {
-            // the i-th component of the gradient
-            auto grad_i = [=](const std::vector<T> &x)
-            { return grad(x)[i]; };
+            // The i-th component of the gradient
+            auto grad_i = [=](const Eigen::VectorXd &x)
+            { return grad(x)(i); };
 
-            // gradient of the i-th component of the gradient of f (other type of finite differences)
+            // Gradient of the i-th component of the gradient of f (other type of finite differences)
             auto grad_grad_i = gradient<decltype(f), double, typename DT::otherType>(f, h);
 
-            // compute and insert the i-th row
-            hessian.push_back(grad_grad_i(x));
+            // Compute and insert the i-th row
+            hessian.row(i) = grad_grad_i(x);
         }
 
         return hessian;

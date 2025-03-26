@@ -1,10 +1,8 @@
-
 #ifndef FD_GRADIENT_HPP
 #define FD_GRADIENT_HPP
 
-#include <functional>
+#include <Math>
 #include <type_traits> // for std::is_same_v
-#include <Eigen/Dense>
 
 // Finite difference types
 namespace DifferenceType
@@ -49,31 +47,31 @@ namespace DifferenceType
  * auto d  = d4(x0); // Computes the gradient of f at x0 (x0 is a vector of size 2)
  */
 template <typename F, typename T, typename DT = DifferenceType::Centered>
-std::function<std::vector<T>(const std::vector<T> &)> gradient(const F &f, const T &h)
+std::function<Eigen::VectorXd(const Eigen::VectorXd &)> gradient(const F &f, const T &h)
 {
-  return [=](const std::vector<T> &x) -> std::vector<T>
+  return [=](const Eigen::VectorXd &x) -> Eigen::VectorXd
   {
-    std::vector<T> grad(x.size(), 0);
+    Eigen::VectorXd grad = Eigen::VectorXd::Zero(x.size());
 
-    for (std::size_t i = 0; i < x.size(); ++i)
+    for (int i = 0; i < x.size(); ++i)
     {
-      std::vector<T> x_forward = x;
-      std::vector<T> x_backward = x;
+      Eigen::VectorXd x_forward = x;
+      Eigen::VectorXd x_backward = x;
 
-      x_forward[i] += h;
-      x_backward[i] -= h;
+      x_forward(i) += h;
+      x_backward(i) -= h;
 
-      if constexpr (std::is_same_v<DT, DifferenceType::Forward>)
+      if (std::is_same_v<DT, DifferenceType::Forward>) // Forward
       {
-        grad[i] = (f(x_forward) - f(x)) / h;
+        grad(i) = (f(x_forward) - f(x)) / h;
       }
-      else if constexpr (std::is_same_v<DT, DifferenceType::Backward>)
+      else if constexpr (std::is_same_v<DT, DifferenceType::Backward>) // Backward
       {
-        grad[i] = (f(x) - f(x_backward)) / h;
+        grad(i) = (f(x) - f(x_backward)) / h;
       }
-      else // Centered
-      {
-        grad[i] = (f(x_forward) - f(x_backward)) / (2 * h);
+      else
+      { // Centered
+        grad(i) = (f(x_forward) - f(x_backward)) / (2 * h);
       }
     }
 

@@ -60,13 +60,16 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "cfenv": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "getpot": "cpp"
     },
     "C_Cpp.default.includePath": [
         "${workspaceFolder}/include/**",
         "${workspaceFolder}/eigen/**",
         "${workspaceFolder}/eigen"
     ],
-
     "C_Cpp.intelliSenseEngine": "default",
+    "[cpp]": {
+        "editor.defaultFormatter": "ms-vscode.cpptools"
+    },
 }
