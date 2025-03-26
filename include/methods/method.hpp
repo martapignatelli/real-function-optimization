@@ -68,19 +68,9 @@ public:
      */
     virtual void print() const
     {
+        Eigen::IOFormat commaFormat(Eigen::StreamPrecision, 0, ",", ",", "", "", "(", ")");
         const Params &p = get_params(); // Get correct params
-
-        std::cout << "initial_condition: (";
-        for (index_type i = 0; i < p.initial_condition.size(); ++i)
-        {
-            if (i > 0)
-            {
-                std::cout << ", ";
-            }
-            std::cout << p.initial_condition[i];
-        }
-        std::cout << ")" << std::endl;
-
+        std::cout << "initial_condition: " << p.initial_condition.format(commaFormat) << std::endl;
         std::cout << "tolerance_r: " << p.tolerance_r << std::endl;
         std::cout << "tolerance_s: " << p.tolerance_s << std::endl;
         std::cout << "initial_step: " << p.initial_step << std::endl;

@@ -5,7 +5,7 @@
 // This is a simple example of how to use the gradient_descent function.
 int main()
 {
-    const GetPot datafile("data.txt");   
+    const GetPot datafile("data.txt"); 
 
     const bool gradient_descent = datafile("gradient_descent", "true");
     if (gradient_descent)

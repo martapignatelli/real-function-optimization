@@ -1,13 +1,12 @@
 #ifndef READ_HPP
 #define READ_HPP
 
-#include "gradient_descent.hpp"
+#include <Methods>
 #include "GetPot"
 #include "muparserx_interface.hpp"
 #include "fd_gradient.hpp"
-#include "heavy_ball.hpp"
-#include "nesterov.hpp"
-#include "adam.hpp"
+#include "fd_hessian.hpp"
+
 
 //Read the parameters for the gradient descent method from a GetPot object
 GradientDescentParams read_gradient_descent(const GetPot &datafile);

@@ -4,36 +4,10 @@
 void print_result(const vector_type &minimum, scalar_function f, // Function f
                   vector_function grad_f)
 {
-    std::cout << "Computed minimum: (";
-    for (int_type i = 0; i < minimum.size(); ++i)
-    {
-        std::cout << minimum[i];
-        if (i < minimum.size() - 1)
-        {
-            std::cout << ", ";
-        }
-    }
-    std::cout << ")" << std::endl;
-    std::cout << "f(";
-    for (int_type i = 0; i < minimum.size(); ++i)
-    {
-        std::cout << minimum[i];
-        if (i < minimum.size() - 1)
-        {
-            std::cout << ", ";
-        }
-    }
-    std::cout << ") = " << f(minimum) << std::endl;
-    std::cout << "||grad_f(";
-    for (int_type i = 0; i < minimum.size(); ++i)
-    {
-        std::cout << minimum[i];
-        if (i < minimum.size() - 1)
-        {
-            std::cout << ", ";
-        }
-    }
-    std::cout << ")|| = " << grad_f(minimum).norm() << std::endl
+    Eigen::IOFormat commaFormat(Eigen::StreamPrecision, 0, ",", ",", "", "", "(", ")");
+    std::cout << "Computed minimum: " << minimum.format(commaFormat) << std::endl;
+    std::cout << "f " << minimum.format(commaFormat) << " = " << f(minimum) << std::endl;
+    std::cout << "|| grad_f " << minimum.format(commaFormat) << " || = " << grad_f(minimum).norm() << std::endl
               << std::endl;
 }
 

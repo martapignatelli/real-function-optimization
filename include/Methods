@@ -1,3 +1,4 @@
+#include "method.hpp"
 #include "gradient_descent.hpp"
 #include "heavy_ball.hpp"
 #include "nesterov.hpp"

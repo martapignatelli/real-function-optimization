@@ -77,7 +77,7 @@
         "${workspaceFolder}/include/**",
         "${workspaceFolder}/eigen/**",
         "${workspaceFolder}/eigen",
-        "${workspaceFolder}/include/methods"
+        "/usr/include/muparserx"
     ],
     "C_Cpp.intelliSenseEngine": "default",
     "[cpp]": {
