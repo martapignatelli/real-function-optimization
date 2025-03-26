@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/include/**",
                 "${workspaceFolder}/eigen/**",
-                "${workspaceFolder}/eigen"
+                "${workspaceFolder}/eigen",
+                "/usr/include/muparserx"
             ],
             "defines": [],
             "cStandard": "c17",
