@@ -1,11 +1,11 @@
 #include "run.hpp"
 
 // Prints the computed minimum, function value at the minimum, and gradient norm at the minimum.
-void print_result(const Eigen::VectorXd &minimum, std::function<double(const Eigen::VectorXd &)> f, // Function f
-                  std::function<Eigen::VectorXd(const Eigen::VectorXd &)> grad_f)
+void print_result(const vector_type &minimum, scalar_function f, // Function f
+                  vector_function grad_f)
 {
     std::cout << "Computed minimum: (";
-    for (size_t i = 0; i < minimum.size(); ++i)
+    for (int_type i = 0; i < minimum.size(); ++i)
     {
         std::cout << minimum[i];
         if (i < minimum.size() - 1)
@@ -15,7 +15,7 @@ void print_result(const Eigen::VectorXd &minimum, std::function<double(const Eig
     }
     std::cout << ")" << std::endl;
     std::cout << "f(";
-    for (size_t i = 0; i < minimum.size(); ++i)
+    for (int_type i = 0; i < minimum.size(); ++i)
     {
         std::cout << minimum[i];
         if (i < minimum.size() - 1)
@@ -25,7 +25,7 @@ void print_result(const Eigen::VectorXd &minimum, std::function<double(const Eig
     }
     std::cout << ") = " << f(minimum) << std::endl;
     std::cout << "||grad_f(";
-    for (size_t i = 0; i < minimum.size(); ++i)
+    for (int_type i = 0; i < minimum.size(); ++i)
     {
         std::cout << minimum[i];
         if (i < minimum.size() - 1)
@@ -45,7 +45,7 @@ void run_gradient_descent(const GradientDescentParams &params, const std::string
         // Runs gradient descent with exponential step decay.
         GradientDescent<GradientDescentType::exponential> exponential_solver(params);
         exponential_solver.print();
-        Eigen::VectorXd minimum_exponential = exponential_solver();
+        vector_type minimum_exponential = exponential_solver();
         print_result(minimum_exponential, params.f, params.grad_f);
     }
     else if (gradient_method_t == "Inverse decay")
@@ -53,7 +53,7 @@ void run_gradient_descent(const GradientDescentParams &params, const std::string
         // Runs gradient descent with inverse step decay.
         GradientDescent<GradientDescentType::inverse> inverse_solver(params);
         inverse_solver.print();
-        Eigen::VectorXd minimum_inverse = inverse_solver();
+        vector_type minimum_inverse = inverse_solver();
         print_result(minimum_inverse, params.f, params.grad_f);
     }
     else if (gradient_method_t == "Armijo rule")
@@ -61,7 +61,7 @@ void run_gradient_descent(const GradientDescentParams &params, const std::string
         // Runs gradient descent using the Armijo rule for step size selection.
         GradientDescent<GradientDescentType::armijo> armijo_solver(params);
         armijo_solver.print();
-        Eigen::VectorXd minimum_armijo = armijo_solver();
+        vector_type minimum_armijo = armijo_solver();
         print_result(minimum_armijo, params.f, params.grad_f);
     }
     else
@@ -80,7 +80,7 @@ void run_heavy_ball(const HeavyBallParams &params, const std::string &heavy_ball
             // Runs heavy ball with exponential step decay and dynamic memory.
             HeavyBall<HeavyBallType::exponential, HeavyBallStrategy::dynamic> solver(params);
             solver.print();
-            Eigen::VectorXd minimum = solver();
+            vector_type minimum = solver();
             print_result(minimum, params.f, params.grad_f);
         }
         else if (heavy_ball_s == "Constant")
@@ -88,7 +88,7 @@ void run_heavy_ball(const HeavyBallParams &params, const std::string &heavy_ball
             // Runs heavy ball with exponential step decay and constant memory.
             HeavyBall<HeavyBallType::exponential, HeavyBallStrategy::constant> solver(params);
             solver.print();
-            Eigen::VectorXd minimum = solver();
+            vector_type minimum = solver();
             print_result(minimum, params.f, params.grad_f);
         }
         else
@@ -104,7 +104,7 @@ void run_heavy_ball(const HeavyBallParams &params, const std::string &heavy_ball
             // Runs heavy ball with inverse step decay and dynamic memory.
             HeavyBall<HeavyBallType::inverse, HeavyBallStrategy::dynamic> solver(params);
             solver.print();
-            Eigen::VectorXd minimum = solver();
+            vector_type minimum = solver();
             print_result(minimum, params.f, params.grad_f);
         }
         else if (heavy_ball_s == "Constant")
@@ -112,7 +112,7 @@ void run_heavy_ball(const HeavyBallParams &params, const std::string &heavy_ball
             // Runs heavy ball with inverse step decay and constant memory.
             HeavyBall<HeavyBallType::inverse, HeavyBallStrategy::constant> solver(params);
             solver.print();
-            Eigen::VectorXd minimum = solver();
+            vector_type minimum = solver();
             print_result(minimum, params.f, params.grad_f);
         }
         else
@@ -128,7 +128,7 @@ void run_heavy_ball(const HeavyBallParams &params, const std::string &heavy_ball
             // Runs heavy ball with constant step size and dynamic memory.
             HeavyBall<HeavyBallType::constant, HeavyBallStrategy::dynamic> solver(params);
             solver.print();
-            Eigen::VectorXd minimum = solver();
+            vector_type minimum = solver();
             print_result(minimum, params.f, params.grad_f);
         }
         else if (heavy_ball_s == "Constant")
@@ -136,7 +136,7 @@ void run_heavy_ball(const HeavyBallParams &params, const std::string &heavy_ball
             // Runs heavy ball with constant step size and constant memory.
             HeavyBall<HeavyBallType::constant, HeavyBallStrategy::constant> solver(params);
             solver.print();
-            Eigen::VectorXd minimum = solver();
+            vector_type minimum = solver();
             print_result(minimum, params.f, params.grad_f);
         }
         else
@@ -157,7 +157,7 @@ void run_nesterov(const NesterovParams &params, const std::string &nesterov_t, c
             // Runs nesterov with exponential step decay and dynamic memory.
             Nesterov<NesterovType::exponential, NesterovStrategy::dynamic> solver(params);
             solver.print();
-            Eigen::VectorXd minimum = solver();
+            vector_type minimum = solver();
             print_result(minimum, params.f, params.grad_f);
         }
         else if (nesterov_s == "Constant")
@@ -165,7 +165,7 @@ void run_nesterov(const NesterovParams &params, const std::string &nesterov_t, c
             // Runs nesterov with exponential step decay and constant memory.
             Nesterov<NesterovType::exponential, NesterovStrategy::constant> solver(params);
             solver.print();
-            Eigen::VectorXd minimum = solver();
+            vector_type minimum = solver();
             print_result(minimum, params.f, params.grad_f);
         }
         else
@@ -181,7 +181,7 @@ void run_nesterov(const NesterovParams &params, const std::string &nesterov_t, c
             // Runs nesterov with inverse step decay and dynamic memory.
             Nesterov<NesterovType::inverse, NesterovStrategy::dynamic> solver(params);
             solver.print();
-            Eigen::VectorXd minimum = solver();
+            vector_type minimum = solver();
             print_result(minimum, params.f, params.grad_f);
         }
         else if (nesterov_s == "Constant")
@@ -189,7 +189,7 @@ void run_nesterov(const NesterovParams &params, const std::string &nesterov_t, c
             // Runs nesterov with inverse step decay and constant memory.
             Nesterov<NesterovType::inverse, NesterovStrategy::constant> solver(params);
             solver.print();
-            Eigen::VectorXd minimum = solver();
+            vector_type minimum = solver();
             print_result(minimum, params.f, params.grad_f);
         }
         else
@@ -205,7 +205,7 @@ void run_nesterov(const NesterovParams &params, const std::string &nesterov_t, c
             // Runs nesterov with constant step size and dynamic memory.
             Nesterov<NesterovType::constant, NesterovStrategy::dynamic> solver(params);
             solver.print();
-            Eigen::VectorXd minimum = solver();
+            vector_type minimum = solver();
             print_result(minimum, params.f, params.grad_f);
         }
         else if (nesterov_s == "Constant")
@@ -213,7 +213,7 @@ void run_nesterov(const NesterovParams &params, const std::string &nesterov_t, c
             // Runs nesterov with constant step size and constant memory.
             Nesterov<NesterovType::constant, NesterovStrategy::constant> solver(params);
             solver.print();
-            Eigen::VectorXd minimum = solver();
+            vector_type minimum = solver();
             print_result(minimum, params.f, params.grad_f);
         }
         else
@@ -231,7 +231,7 @@ void run_adam(const AdamParams &params, const std::string &adam_t)
         // Runs adam with dynamic step size.
         Adam<AdamType::dynamic> solver(params);
         solver.print();
-        Eigen::VectorXd minimum = solver();
+        vector_type minimum = solver();
         print_result(minimum, params.f, params.grad_f);
     }
     else if (adam_t == "Constant")
@@ -239,7 +239,7 @@ void run_adam(const AdamParams &params, const std::string &adam_t)
         // Runs adam with constant step size.
         Adam<AdamType::constant> solver(params);
         solver.print();
-        Eigen::VectorXd minimum = solver();
+        vector_type minimum = solver();
         print_result(minimum, params.f, params.grad_f);
     }
     else

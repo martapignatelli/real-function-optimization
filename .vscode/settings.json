@@ -61,7 +61,17 @@
         "thread": "cpp",
         "cfenv": "cpp",
         "typeinfo": "cpp",
-        "getpot": "cpp"
+        "getpot": "cpp",
+        "math": "cpp",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "set": "cpp",
+        "unordered_set": "cpp",
+        "hash_map": "cpp",
+        "format": "cpp",
+        "span": "cpp",
+        "cinttypes": "cpp",
+        "variant": "cpp"
     },
     "C_Cpp.default.includePath": [
         "${workspaceFolder}/include/**",

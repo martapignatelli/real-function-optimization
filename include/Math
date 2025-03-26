@@ -1,9 +1,21 @@
-#include <functional>
+// include libraries for math operations
 #include <limits>
 #include <Eigen/Dense>
 #include <vector>
 #include <cmath>
+
+// include libraries for functions
+#include <functional>
+
+// include libraries for I/O
 #include <iostream>
 
-#include "vector_op.hpp"
+// Define types
+using vector_type = Eigen::VectorXd;
+using matrix_type = Eigen::MatrixXd;
+using string_type = std::string;
+using scalar_type = double;
+using int_type = int;
+using vector_function = std::function<vector_type(const vector_type &)>;
+using scalar_function = std::function<scalar_type(const vector_type &)>;
 

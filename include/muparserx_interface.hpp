@@ -25,7 +25,7 @@ public:
         M_parser.DefineVar("x", mup::Variable(&M_value));
     }
     //! Constructor that takes a string containing muParserX expression
-    muParserXInterface(const std::string expression, const unsigned N = 1) : muParserXInterface(N)
+    muParserXInterface(const string_type expression, const unsigned N = 1) : muParserXInterface(N)
     {
         try
         {
@@ -93,7 +93,7 @@ public:
      * @par e The expression
      */
     void
-    set_expression(const std::string &e)
+    set_expression(const string_type &e)
     {
         My_e = e;
         M_parser.SetExpr(e.c_str());
@@ -107,7 +107,7 @@ public:
      * @param x Vector of input variable values.
      * @return Vector of evaluated results.
      */
-    Eigen::VectorXd operator()(const Eigen::VectorXd &x) const
+    vector_type operator()(const vector_type &x) const
     {
         // Assign input values to the parser's variable storage
         for (unsigned i = 0; i < N; ++i)
@@ -116,7 +116,7 @@ public:
         }
 
         mup::Value val;
-        Eigen::VectorXd vec;
+        vector_type vec;
         try
         {
             // Evaluate the parsed expression
@@ -125,7 +125,7 @@ public:
             if (val.IsScalar())
             {
                 // If the result is a scalar, return a single-element vector
-                vec = Eigen::VectorXd(1);
+                vec = vector_type(1);
                 vec(0) = val.GetFloat();
             }
             else
@@ -133,7 +133,7 @@ public:
                 // If the result is a matrix, extract its values
                 unsigned rows = val.GetRows();
                 unsigned cols = val.GetCols();
-                vec = Eigen::VectorXd(rows * cols);
+                vec = vector_type(rows * cols);
 
                 for (unsigned i = 0; i < rows; ++i)
                 {
@@ -157,7 +157,7 @@ public:
 
 protected:
     // a copy of the muparserX expression, used for the copy operations
-    std::string My_e;
+    string_type My_e;
     // The muparseX engine
     mup::ParserX M_parser;
     // The muparserX value used to set the variables in the engine
@@ -180,7 +180,7 @@ public:
      * @param expression The muParserX expression string.
      * @param N Number of input variables.
      */
-    muParserXScalarInterface(const std::string expression, const unsigned N = 1) : muParserXInterface(expression, N) {}
+    muParserXScalarInterface(const string_type expression, const unsigned N = 1) : muParserXInterface(expression, N) {}
 
     //! Function call operator
     /*!
@@ -189,9 +189,9 @@ public:
      * @param x Vector of input variable values.
      * @return Single scalar result.
      */
-    double operator()(const Eigen::VectorXd &x) const
+    double operator()(const vector_type &x) const
     {
-        Eigen::VectorXd vec = muParserXInterface::operator()({x});
+        vector_type vec = muParserXInterface::operator()({x});
         return vec.size() == 0 ? 0.0 : vec(0);
     }
 };

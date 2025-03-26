@@ -20,12 +20,12 @@
  */
 
 template <typename F, typename T, typename DT = DifferenceType::Centered>
-std::function<Eigen::MatrixXd(const Eigen::VectorXd &)> hessian(const F &f, const T &h)
+std::function<matrix_type(const vector_type &)> hessian(const F &f, const T &h)
 {
-    return [=](const Eigen::VectorXd &x) -> Eigen::MatrixXd
+    return [=](const vector_type &x) -> matrix_type
     {
         // Initialize the Hessian matrix
-        Eigen::MatrixXd hessian = Eigen::MatrixXd::Zero(x.size(), x.size());
+        matrix_type hessian = matrix_type::Zero(x.size(), x.size());
 
         // Compute the gradient with finite differences (DT type)
         auto grad = gradient<decltype(f), double, DT>(f, h);
@@ -34,7 +34,7 @@ std::function<Eigen::MatrixXd(const Eigen::VectorXd &)> hessian(const F &f, cons
         for (int i = 0; i < x.size(); ++i)
         {
             // The i-th component of the gradient
-            auto grad_i = [=](const Eigen::VectorXd &x)
+            auto grad_i = [=](const vector_type &x)
             { return grad(x)(i); };
 
             // Gradient of the i-th component of the gradient of f (other type of finite differences)

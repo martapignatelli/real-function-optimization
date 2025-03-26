@@ -47,16 +47,16 @@ namespace DifferenceType
  * auto d  = d4(x0); // Computes the gradient of f at x0 (x0 is a vector of size 2)
  */
 template <typename F, typename T, typename DT = DifferenceType::Centered>
-std::function<Eigen::VectorXd(const Eigen::VectorXd &)> gradient(const F &f, const T &h)
+std::function<vector_type(const vector_type &)> gradient(const F &f, const T &h)
 {
-  return [=](const Eigen::VectorXd &x) -> Eigen::VectorXd
+  return [=](const vector_type &x) -> vector_type
   {
-    Eigen::VectorXd grad = Eigen::VectorXd::Zero(x.size());
+    vector_type grad = vector_type::Zero(x.size());
 
     for (int i = 0; i < x.size(); ++i)
     {
-      Eigen::VectorXd x_forward = x;
-      Eigen::VectorXd x_backward = x;
+      vector_type x_forward = x;
+      vector_type x_backward = x;
 
       x_forward(i) += h;
       x_backward(i) -= h;
