@@ -6,9 +6,17 @@
 // Parameters for the gradient descent algorithm
 struct AdamParams : public Params
 {
-    scalar_type mu;                // Parameter for the exponential decay and the inverse decay
-    scalar_type beta1;             // Exponential decay rate for 1st moment estimate
-    scalar_type beta2;             // Exponential decay rate for 2nd moment estimate
+    AdamParams() = default;
+    AdamParams(scalar_function f, vector_function df_grad_f, vector_type initial_condition,
+               scalar_type tolerance_r, scalar_type tolerance_s, scalar_type initial_step,
+               int_type max_iterations, scalar_type minimum_step,
+               scalar_type mu, scalar_type beta1, scalar_type beta2)
+        : Params(f, df_grad_f, initial_condition, tolerance_r, tolerance_s,
+                 initial_step, max_iterations, minimum_step),
+          mu(mu), beta1(beta1), beta2(beta2) {}
+    scalar_type mu;    // Parameter for the exponential decay and the inverse decay
+    scalar_type beta1; // Exponential decay rate for 1st moment estimate
+    scalar_type beta2; // Exponential decay rate for 2nd moment estimate
 };
 
 // Descent types
@@ -25,27 +33,7 @@ class Adam : public Method
 
 public:
     // Constructor with parameters
-    Adam(const AdamParams &params) : params(params) {}
-
-    // Constructor with default parameters
-    Adam(
-        scalar_function f,
-        vector_function grad_f,
-        const vector_type &initial_condition) : params({
-                                                    f,
-                                                    grad_f,
-                                                    initial_condition,
-                                                    1e-6,
-                                                    1e-6,
-                                                    1e-3,
-                                                    100,
-                                                    1e-6,
-                                                    0.2,
-                                                    0.9,
-                                                    0.999,
-                                                })
-    {
-    }
+    Adam(const AdamParams &params) : Method(params), params(params) {}
 
     /**
      * Run the Adam algorithm.

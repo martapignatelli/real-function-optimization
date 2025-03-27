@@ -6,6 +6,15 @@
 // Parameters for the gradient descent algorithm
 struct NesterovParams : public Params
 {
+    NesterovParams() = default;
+    // Constructor for NesterovParams
+    NesterovParams(scalar_function f, vector_function df_grad_f, vector_type initial_condition,
+                   scalar_type tolerance_r, scalar_type tolerance_s, scalar_type initial_step,
+                   int_type max_iterations, scalar_type minimum_step,
+                   scalar_type mu, scalar_type eta)
+        : Params(f, df_grad_f, initial_condition, tolerance_r, tolerance_s,
+                 initial_step, max_iterations, minimum_step),
+          mu(mu), eta(eta) {}
     scalar_type mu;  // Parameter for the exponential decay and the inverse decay
     scalar_type eta; // Memory parameter
 };
@@ -32,25 +41,7 @@ class Nesterov : public Method
 
 public:
     // Constructor with parameters
-    Nesterov(const NesterovParams &params) : params(params) {}
-    // Constructor with default parameters
-    Nesterov(
-        scalar_function f,
-        vector_function grad_f,
-        const vector_type &initial_condition) : params({
-                                                    f,
-                                                    grad_f,
-                                                    initial_condition,
-                                                    1e-6,
-                                                    1e-6,
-                                                    1,
-                                                    100,
-                                                    1e-2,
-                                                    0.2,
-                                                    0.9,
-                                                })
-    {
-    }
+    Nesterov(const NesterovParams &params) : Method(params), params(params) {}
 
     /**
      * Run the Nesterov algorithm.

@@ -3,4 +3,4 @@
 #include "heavy_ball.hpp"
 #include "nesterov.hpp"
 #include "adam.hpp"
-#include "newton.hpp"
+//#include "newton.hpp"

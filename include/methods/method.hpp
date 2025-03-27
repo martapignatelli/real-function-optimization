@@ -6,6 +6,17 @@
 // Parameters for the gradient descent algorithm
 struct Params
 {
+    Params() = default;
+     // Constructor to initialize Params using an initializer list
+     Params(scalar_function f, vector_function grad_f, vector_type initial_condition,
+        scalar_type tolerance_r, scalar_type tolerance_s, scalar_type initial_step,
+        int_type max_iterations, scalar_type minimum_step)
+     : f(f), grad_f(grad_f), initial_condition(initial_condition),
+       tolerance_r(tolerance_r), tolerance_s(tolerance_s), 
+       initial_step(initial_step), max_iterations(max_iterations),
+       minimum_step(minimum_step) {}
+
+    // contructor
     scalar_function f;             // Function f
     vector_function grad_f;        // Gradient of f
     vector_type initial_condition; // Initial condition
@@ -14,12 +25,17 @@ struct Params
     scalar_type initial_step;      // Initial step size αlpha0
     int_type max_iterations;       // Maximal number of iterations
     scalar_type minimum_step;      // Minimum step size
+    // virtual destructor
+    virtual ~Params() {}
 };
 
 class Method
 {
 
 public:
+    // Constructor with paramters
+    Method(const Params &params) : params(params) {}
+
     // Run the algorithm
     virtual vector_type operator()() const = 0;
 

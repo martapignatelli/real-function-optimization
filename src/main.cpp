@@ -16,7 +16,7 @@ int main()
         
         // Run the gradient descent algorithm with the chosen strategy
         const string_type gradient_method_t = datafile("gradient_method_t", "Armijo rule"); // Rule to compute the step size for the gradient descent algorithm
-        run_gradient_descent(params_gd, gradient_method_t);
+        run(params_gd, gradient_method_t, "");
     }
 
     const bool heavy_ball = datafile("heavy_ball", "true");
@@ -29,7 +29,7 @@ int main()
         // Run the heavy ball algorithm with the chosen strategy
         const string_type heavy_ball_t = datafile("heavy_ball_t", "Exponential decay"); // Rule for the step size
         const string_type heavy_ball_s = datafile("heavy_ball_s", "Constant");          // Rule for eta
-        run_heavy_ball(params_hb, heavy_ball_t, heavy_ball_s);
+        run(params_hb, heavy_ball_t, heavy_ball_s);
     }
 
     const bool nesterov = datafile("nesterov", "true");
@@ -42,7 +42,7 @@ int main()
         // Run the nesterov algorithm with the chosen strategy
         const string_type nesterov_t = datafile("nesterov_t", "Exponential decay"); // Rule for the step size
         const string_type nesterov_s = datafile("nesterov_s", "Constant");          // Rule for eta
-        run_nesterov(params_n, nesterov_t, nesterov_s);
+        run(params_n, nesterov_t, nesterov_s);
     }
 
     const bool adam = datafile("adam", "true");
@@ -54,7 +54,7 @@ int main()
         
         // Run the adam algorithm with the chosen strategy
         const string_type adam_t = datafile("adam_t", "Exponential decay"); // Rule for the step size
-        run_adam(params_n, adam_t);
+        run(params_n, adam_t, "");
     }
 
     return 0;
