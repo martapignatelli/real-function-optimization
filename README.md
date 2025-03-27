@@ -62,7 +62,7 @@ $$
 
 For each execution of a method, the following information is printed:
 - number of iterations to convergence (if it converged before the maximum number of iterations specified);
-- final values of $x$ (the estimated minimum) and $f(x)$ (the value that the function takes at the estemated minimum);
+- final values of $x$ (the estimated minimum) and $f(x)$ (the value that the function takes at the estimated minimum);
 - norm of the gradient at the minimum point;
 - method-specific parameters used during the run.
 
