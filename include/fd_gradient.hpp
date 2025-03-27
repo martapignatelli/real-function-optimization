@@ -2,8 +2,9 @@
 #define FD_GRADIENT_HPP
 
 #include <Math>
-#include <type_traits> // for std::is_same_v
-
+#include <numeric>     // For std::iota
+#include <execution>   // For std::execution::par
+#include <type_traits> // For std::is_same_v
 // Finite difference types
 namespace DifferenceType
 {
@@ -52,8 +53,11 @@ std::function<vector_type(const vector_type &)> gradient(const F &f, const T &h)
   return [=](const vector_type &x) -> vector_type
   {
     vector_type grad = vector_type::Zero(x.size());
+    std::vector<index_type> indices(x.size());
+    std::iota(indices.begin(), indices.end(), 0); // Fill indices with 0, 1, ..., x.size()-1
 
-    for (int i = 0; i < x.size(); ++i)
+    // Lambda function to compute the gradient for a single index
+    auto compute_single_gradient = [&x, &h, f](index_type i)
     {
       vector_type x_forward = x;
       vector_type x_backward = x;
@@ -61,19 +65,22 @@ std::function<vector_type(const vector_type &)> gradient(const F &f, const T &h)
       x_forward(i) += h;
       x_backward(i) -= h;
 
-      if (std::is_same_v<DT, DifferenceType::Forward>) // Forward
+      if constexpr (std::is_same_v<DT, DifferenceType::Forward>)
       {
-        grad(i) = (f(x_forward) - f(x)) / h;
+        return (f(x_forward) - f(x)) / h; // grad(i)
       }
-      else if constexpr (std::is_same_v<DT, DifferenceType::Backward>) // Backward
+      else if constexpr (std::is_same_v<DT, DifferenceType::Backward>)
       {
-        grad(i) = (f(x) - f(x_backward)) / h;
+        return (f(x) - f(x_backward)) / h; // grad(i)
       }
       else
       { // Centered
-        grad(i) = (f(x_forward) - f(x_backward)) / (2 * h);
+        return (f(x_forward) - f(x_backward)) / (2 * h); // grad(i)
       }
-    }
+    };
+
+    // Parallel execution using std::transform with std::execution::par
+    std::transform(std::execution::par, indices.begin(), indices.end(), grad.begin(), compute_single_gradient);
 
     return grad;
   };
