@@ -152,7 +152,7 @@ public:
      * The parameters are: initial condition, tolerance_r, tolerance_s,
      * initial step, maximum iterations, minimum step, mu, beta1, and beta2.
      */
-    void print() const
+    void print() const override
     {
         // Use constexpr if to select the descent strategy at compile time
         if constexpr (T == AdamType::dynamic)

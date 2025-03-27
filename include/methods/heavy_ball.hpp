@@ -67,7 +67,7 @@ public:
      * @note The algorithm also uses a small number \f$ \epsilon \f$ to avoid
      * division by zero.
      */
-    vector_type operator()() const
+    vector_type operator()() const override
     {
         vector_type x = Eigen::Map<const vector_type>(params.initial_condition.data(), params.initial_condition.size());
         scalar_type alpha = params.initial_step;
@@ -88,7 +88,7 @@ public:
             }
 
             // Normalization of the gradient
-            grad = (1 / residual) * grad;
+            grad.normalize();
 
             // Use constexpr if to select the descent strategy at compile time
             if (alpha > params.minimum_step)

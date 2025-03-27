@@ -84,7 +84,7 @@ public:
             }
             if constexpr (T == GradientDescentType::exponential || T == GradientDescentType::inverse)
             {
-                grad = (1 / residual) * grad;
+                grad.normalize();
             }
 
             // Use constexpr if to select the descent strategy at compile time
@@ -138,7 +138,7 @@ public:
      * the step size, the initial step size, the maximum number of iterations,
      * the minimum step size, \f$ \mu \f$ and \f$ \sigma \f$.
      */
-    void print() const
+    void print() const override
     {
         // Use constexpr if to select the descent strategy at compile time
         if constexpr (T == GradientDescentType::exponential)

@@ -68,7 +68,7 @@ public:
      * @note The algorithm also uses a small number \f$ \epsilon \f$ to avoid
      * division by zero.
      */
-    vector_type operator()() const
+    vector_type operator()() const override
     {
         vector_type x = Eigen::Map<const vector_type>(params.initial_condition.data(), params.initial_condition.size());
         scalar_type alpha = params.initial_step;
@@ -154,7 +154,7 @@ public:
      * The parameters are: initial condition, tolerance_r, tolerance_s,
      * initial step, maximum iterations, minimum step, mu, and eta.
      */
-    void print() const
+    void print() const override
     {
         // Use constexpr if to select the descent strategy at compile time
         if constexpr (T == NesterovType::exponential)
