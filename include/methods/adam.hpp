@@ -143,9 +143,6 @@ public:
     scalar_type get_beta1() const { return params.beta1; }
     scalar_type get_beta2() const { return params.beta2; }
 
-    // Initial condition setter
-    void set_initial_condition(const vector_type &initial_condition) { params.initial_condition = initial_condition; }
-
     /**
      * Print the parameters of this method.
      *
