@@ -88,11 +88,8 @@ This structured file facilitates testing of different optimization scenarios (wi
 ### `muparser_interface.hpp`
 It's an interface developed to parse functions (also vector functions) of an arbitrary number of variables. It's adapted from `muParserInterface` inside [`pacs-examples`](https://github.com/pacs-course/pacs-examples.git) repository.
 
-### `fd_gradient.hpp`
-WIP
-
-## Future development: parallelization
-Parallelizable implementations: `muparser_interface`, `fd_gradient`.
+### `fd_gradient.hpp` and `fd_hessian`
+These two files contain parallel implementations of gradient and hessian matrix computed with finite differences.
 
 ## Authors
 - Marta Pignatelli ([@martapignatelli](https://github.com/martapignatelli))

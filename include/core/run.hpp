@@ -12,6 +12,7 @@ void print_result(const vector_type &minimum,
                   scalar_function f,
                   vector_function grad_f);
 
+                  
 void run_solver(const Method &solver);
 
 void run(const Params &params, const string_type &method_t, const string_type &method_s = "");
