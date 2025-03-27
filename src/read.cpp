@@ -66,7 +66,7 @@ GradientDescentParams read_gradient_descent(const GetPot &datafile)
     else
     {
         const string_type grad_f_str = datafile("grad_f", "{16*x[0]*x[0]*x[0] + 2*x[1] +2, 4*x[1]+2*x[0]}"); // Gradient of f
-        muParserXInterface grad_f(grad_f_str, N);                                                            // Initialize the gradient with muparserx
+        muParserXVectorInterface grad_f(grad_f_str, N);                                                            // Initialize the gradient with muparserx
         // Parameters for the gradient descent algorithm
         params = {
             f,
@@ -151,7 +151,7 @@ HeavyBallParams read_heavy_ball(const GetPot &datafile)
     else
     {
         const string_type grad_f_str = datafile("grad_f", "{16*x[0]*x[0]*x[0] + 2*x[1] +2, 4*x[1]+2*x[0]}"); // Gradient of f
-        muParserXInterface grad_f(grad_f_str, N);                                                            // Initialize the gradient with muparserx
+        muParserXVectorInterface grad_f(grad_f_str, N);                                                            // Initialize the gradient with muparserx
         // Parameters for the algorithm
         params = {
             f,
@@ -236,7 +236,7 @@ NesterovParams read_nesterov(const GetPot &datafile)
     else
     {
         const string_type grad_f_str = datafile("grad_f", "{16*x[0]*x[0]*x[0] + 2*x[1] +2, 4*x[1]+2*x[0]}"); // Gradient of f
-        muParserXInterface grad_f(grad_f_str, N);                                                            // Initialize the gradient with muparserx
+        muParserXVectorInterface grad_f(grad_f_str, N);                                                            // Initialize the gradient with muparserx
         // Parameters for the algorithm
         params = {
             f,
@@ -324,7 +324,7 @@ AdamParams read_adam(const GetPot &datafile)
     else
     {
         const string_type grad_f_str = datafile("grad_f", "{16*x[0]*x[0]*x[0] + 2*x[1] +2, 4*x[1]+2*x[0]}"); // Gradient of f
-        muParserXInterface grad_f(grad_f_str, N);                                                            // Initialize the gradient with muparserx
+        muParserXVectorInterface grad_f(grad_f_str, N);                                                            // Initialize the gradient with muparserx
         // Parameters for the algorithm
         params = {
             f,

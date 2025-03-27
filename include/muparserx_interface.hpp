@@ -107,7 +107,7 @@ public:
      * @param x Vector of input variable values.
      * @return Vector of evaluated results.
      */
-    vector_type operator()(const vector_type &x) const
+    matrix_type operator()(const vector_type &x) const
     {
         // Assign input values to the parser's variable storage
         for (unsigned i = 0; i < N; ++i)
@@ -116,7 +116,7 @@ public:
         }
 
         mup::Value val;
-        vector_type vec;
+        matrix_type res;
         try
         {
             // Evaluate the parsed expression
@@ -125,21 +125,21 @@ public:
             if (val.IsScalar())
             {
                 // If the result is a scalar, return a single-element vector
-                vec = vector_type(1);
-                vec(0) = val.GetFloat();
+                res = matrix_type(1, 1);
+                res(0, 0) = val.GetFloat();
             }
             else
             {
                 // If the result is a matrix, extract its values
                 unsigned rows = val.GetRows();
                 unsigned cols = val.GetCols();
-                vec = vector_type(rows * cols);
+                res = matrix_type(rows, cols);
 
                 for (unsigned i = 0; i < rows; ++i)
                 {
                     for (unsigned j = 0; j < cols; ++j)
                     {
-                        vec(i * cols + j) = val.At(i, j).GetFloat();
+                        res(i, j) = val.At(i, j).GetFloat();
                     }
                 }
             }
@@ -152,7 +152,7 @@ public:
             std::cerr << "Error Message: " << error.GetMsg() << std::endl;
             throw error;
         }
-        return vec;
+        return res;
     }
 
 protected:
@@ -165,29 +165,69 @@ protected:
     mutable unsigned N;
 };
 
-/*!
- * Specialized class for scalar-valued functions
+/**
+ * \brief A muParserX interface with a vector output
  *
- * Inherits from muParserXInterface, simplifies evaluation by returning a single scalar result.
+ * This class is a specialisation of the muParserXInterface class, with a vector output.
  */
-class muParserXScalarInterface : public muParserXInterface
+class muParserXVectorInterface : public muParserXInterface
 {
 public:
-    //! Constructor
-    /*!
-     * Initializes scalar interface with an expression and number of variables.
-     *
-     * @param expression The muParserX expression string.
-     * @param N Number of input variables.
-     */
-    muParserXScalarInterface(const string_type expression, const unsigned N = 1) : muParserXInterface(expression, N) {}
 
-    //! Function call operator
     /*!
-     * Evaluates the scalar expression with given input variables.
+     * Constructor of the muParserXVectorInterface class
+     *
+     * This is a thin wrapper around the muParserXInterface constructor.
+     * It is used to create a muParserXInterface that returns a vector.
+     *
+     * @param expression The expression to be parsed
+     * @param N The size of the vector returned by the expression
+     */
+    muParserXVectorInterface(const string_type expression, const unsigned N = 1) : muParserXInterface(expression, N) {}
+    
+    /*!
+     * Since the expression may evaluate to a matrix, the result is
+     * taken to be the first column of the matrix.
      *
      * @param x Vector of input variable values.
-     * @return Single scalar result.
+     * @return Vector of evaluated results.
+     */
+    vector_type operator()(const vector_type &x) const{
+        matrix_type mat = muParserXInterface::operator()({x});
+        return mat.col(0);
+    };
+};
+
+/**
+ * \brief A muParserX interface with a scalar output
+ *
+ * This class is a specialisation of the muParserXVectorInterface class, with a scalar output.
+ *
+ * It is used to create a muParserXInterface that returns a scalar.
+ */
+class muParserXScalarInterface : public muParserXVectorInterface
+{
+public:
+    /*!
+     * Constructor of the muParserXScalarInterface class
+     *
+     * This is a thin wrapper around the muParserXVectorInterface constructor.
+     * It is used to create a muParserXInterface that returns a scalar.
+     *
+     * @param expression The expression to be parsed
+     * @param N The size of the vector returned by the expression
+     */
+    muParserXScalarInterface(const string_type expression, const unsigned N = 1) : muParserXVectorInterface(expression, N) {}
+
+    /*!
+     * Evaluate the expression and return the first element of the result.
+     *
+     * The expression is evaluated using the muParserXInterface::operator() method.
+     * The result of the expression is taken to be the first element of the
+     * returned vector.
+     *
+     * @param x Vector of input variable values.
+     * @return The first element of the result of the expression.
      */
     double operator()(const vector_type &x) const
     {
