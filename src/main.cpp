@@ -1,4 +1,5 @@
 #include "read.hpp"
+#include "readnew.hpp"
 #include "run.hpp"
 
 
@@ -11,9 +12,10 @@ int main()
     if (gradient_descent)
     {
         // Read gradient descent parameters
-        std::cout << "GRADIENT DESCENT" << std::endl;
-        GradientDescentParams params_gd = read_gradient_descent(datafile);
-        
+        std::cout << "GRADIENT DESCENT" << std::endl;        
+        GradientDescentParams params_gd;
+        read(datafile, params_gd);
+
         // Run the gradient descent algorithm with the chosen strategy
         const string_type gradient_method_t = datafile("gradient_method_t", "Armijo rule"); // Rule to compute the step size for the gradient descent algorithm
         run(params_gd, gradient_method_t, "");
@@ -24,7 +26,8 @@ int main()
     {
         // Read heavy ball parameters
         std::cout << "HEAVY BALL" << std::endl;
-        HeavyBallParams params_hb = read_heavy_ball(datafile);
+        HeavyBallParams params_hb;
+        read(datafile, params_hb);
         
         // Run the heavy ball algorithm with the chosen strategy
         const string_type heavy_ball_t = datafile("heavy_ball_t", "Exponential decay"); // Rule for the step size
@@ -37,7 +40,9 @@ int main()
     {
         // Read Nesterov parameters
         std::cout << "NESTEROV" << std::endl;
-        NesterovParams params_n = read_nesterov(datafile);
+
+        NesterovParams params_n;
+        read(datafile, params_n);
         
         // Run the nesterov algorithm with the chosen strategy
         const string_type nesterov_t = datafile("nesterov_t", "Exponential decay"); // Rule for the step size
@@ -50,11 +55,13 @@ int main()
     {
         // Read Adam parameters
         std::cout << "ADAM" << std::endl;
-        AdamParams params_n = read_adam(datafile);
+
+        AdamParams params_a;
+        read(datafile, params_a);
         
         // Run the adam algorithm with the chosen strategy
         const string_type adam_t = datafile("adam_t", "Exponential decay"); // Rule for the step size
-        run(params_n, adam_t, "");
+        run(params_a, adam_t, "");
     }
 
     return 0;
